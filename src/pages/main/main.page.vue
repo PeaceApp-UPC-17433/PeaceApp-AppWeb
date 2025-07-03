@@ -126,8 +126,6 @@ export default {
       } else {
         this.$router.push('/profile');
       }
-
-      alert('Login exitoso');
     }
   }
 }
