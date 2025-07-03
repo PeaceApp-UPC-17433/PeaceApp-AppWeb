@@ -29,7 +29,11 @@
       "required": "Todos los campos son obligatorios.",
       "mismatch": "Las contraseñas no coinciden.",
       "missingEmail": "No se encontró el correo o la sesión activa."
-    }
+    },
+    "errorInvalidCaptcha": "Código incorrecto, por favor intenta de nuevo.",
+    "errorInvalidCredentials": "Credenciales incorrectas.",
+    "errorEmailNotFound": "La dirección de correo no existe.",
+    "errorEmailCheck": "Error al verificar la dirección de correo."
   },
   "userForm": {
     "message": "Por favor, llene los datos indicados para crear su cuenta",

@@ -3,7 +3,6 @@ import userSign from '../../components/dialogs/user-sign-up.component.vue';
 import {authUserService} from "@/services/authuser.service.js";
 import {UserApiService} from "@/services/userapi.service.js";
 
-
 export default {
   components: {
     userSign,
@@ -73,11 +72,11 @@ export default {
           localStorage.setItem('userId', user.id);
           return user;
         }
-        this.error = 'Credenciales incorrectas.';
+        this.error = 'main.errorInvalidCredentials';
         return null;
       } catch (error) {
         console.error("Error during authentication: ", error);
-        this.error = "Error en la autenticación.";
+        this.error = 'main.errorInvalidCredentials';
         return null;
       }
     },
@@ -85,38 +84,33 @@ export default {
     async onSubmit() {
       this.error = null;
 
-      // Validar captcha primero
       if (this.userData.captcha !== this.captchaCode) {
-        this.error = 'Código incorrecto, intente de nuevo.';
+        this.error = 'main.errorInvalidCaptcha';
         this.generateCaptcha();
         return;
       }
 
-      // Primero autenticar usuario (obtener token)
       const user = await this.authenticateUser();
 
       if (!user) {
-        // Error de login, no continuar
         this.generateCaptcha();
         return;
       }
 
-      // Con token obtenido, ahora sí validar existencia del usuario con token
       try {
         const userResp = await this.userApiService.getUserByEmail(this.userData.email);
         if (!userResp || !userResp.data) {
-          this.error = 'El correo electrónico no existe.';
+          this.error = 'main.errorEmailNotFound';
           this.generateCaptcha();
           return;
         }
       } catch (err) {
         console.error('Error al buscar usuario por email:', err);
-        this.error = 'Error al verificar el correo.';
+        this.error = 'main.errorEmailCheck';
         this.generateCaptcha();
         return;
       }
 
-      // Todo OK, redirigir y guardar ubicación
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -138,6 +132,7 @@ export default {
   }
 }
 </script>
+
 
 
 <template>
@@ -162,7 +157,7 @@ export default {
           <input v-model="userData.captcha" type="text" placeholder="Ingrese el código" required class="captcha-input" />
 
           <button type="submit">{{ $t('main.login') }}</button>
-          <p v-if="error" class="error">{{ error }}</p>
+          <p v-if="error" class="error">{{ $t(error) }}</p>
 
           <h4>{{ $t('main.message2') }}<a href="#" @click="visible = true">{{ $t('main.signUp') }}</a></h4>
           <h4>{{ $t('main.message3') }}<router-link to="/password-recover">{{ $t('main.clickHere') }}</router-link></h4>
