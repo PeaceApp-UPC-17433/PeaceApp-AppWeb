@@ -33,7 +33,8 @@
     "errorInvalidCaptcha": "Incorrect code, please try again.",
     "errorInvalidCredentials": "Incorrect credentials.",
     "errorEmailNotFound": "The email address does not exist.",
-    "errorEmailCheck": "Error verifying the email address."
+    "errorEmailCheck": "Error verifying the email address.",
+    "captchaPlaceholder": "Enter the code"
   },
   "userForm": {
     "message": "Please fill in the required details to create your account",
@@ -84,7 +85,6 @@
       "content9": "These terms may be updated periodically. Continued use after updates implies acceptance.",
       "lastUpdate": "Last Update"
     }
-
   },
   "authorityForm": {
     "message": "Please fill in the indicated information to create your account",
