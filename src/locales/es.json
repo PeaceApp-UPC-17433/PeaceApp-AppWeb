@@ -84,7 +84,6 @@
       "content9": "Estos términos pueden actualizarse periódicamente. El uso continuo tras las modificaciones implica su aceptación.",
       "lastUpdate": "Fecha de última actualización"
     }
-
   },
   "authorityForm": {
     "message": "Por favor, llene los datos indicados para crear su cuenta",
@@ -200,69 +199,8 @@
   },
   "footer": {
     "terms": "Términos de Servicio",
-    "questions": "Preguntas Frecuentes"
-  },
-  "terms": {
-    "sections": [
-      {
-        "title": "1. Acceptance of Terms",
-        "content": "By accessing and using this platform, you agree to comply with these terms and conditions, as well as our Privacy Policy. If you do not agree, please refrain from using the service."
-      },
-      {
-        "title": "2. User Rights",
-        "items": [
-          "Service Access: Right to access the platform continuously while your account is active and complies with these terms.",
-          "Functionalities: Use of all available tools according to your access level, including interactive heat map and incident reporting.",
-          "Privacy: Protection of your personal data in accordance with current legislation."
-        ]
-      },
-      {
-        "title": "3. User Obligations",
-        "items": [
-          "Proper Use: Use the platform in compliance with the law, without defamatory, illegal content or content that infringes third-party rights.",
-          "Accuracy: Responsibility for the accuracy of provided information, especially in incident reports.",
-          "Security: Maintain the confidentiality of your credentials and will be responsible for all activity under your account."
-        ]
-      },
-      {
-        "title": "4. Usage Restrictions",
-        "items": [
-          "Commercial Use: Prohibited to use the platform or its data for commercial purposes without express authorization.",
-          "Unauthorized Access: Attempting to access restricted system areas is not permitted.",
-          "Interference: Actions that affect service performance or availability are prohibited."
-        ]
-      },
-      {
-        "title": "5. Provider Responsibilities",
-        "items": [
-          "Availability: Maintain platform operation, notifying scheduled maintenance.",
-          "Data Protection: Implement technical and organizational security measures.",
-          "Support: Provide technical assistance through established channels."
-        ]
-      },
-      {
-        "title": "6. Provider Limitations",
-        "items": [
-          "Account Suspension: Right to suspend or delete accounts that violate these terms.",
-          "Modifications: May update or temporarily limit functionalities for maintenance."
-        ]
-      },
-      {
-        "title": "7. Intellectual Property",
-        "content": "All rights to the platform, its design and content are the exclusive property of the service provider. Reproduction without authorization is prohibited."
-      },
-      {
-        "title": "8. Liability Limitation",
-        "items": [
-          "Not liable for indirect damages or data loss resulting from use.",
-          "Not liable for user-generated content.",
-          "Not liable for interruptions beyond our control."
-        ]
-      },
-      {
-        "title": "9. Modifications",
-        "content": "These terms may be updated periodically. Continued use after modifications implies acceptance."
-      }
-    ]
+    "questions": "Preguntas Frecuentes",
+    "contact": "Contáctanos",
+    "about": "Sobre nosotros"
   }
 }
