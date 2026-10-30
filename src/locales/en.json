@@ -1,207 +1,441 @@
 {
-  "main": {
-    "title": "For more information, visit our page and discover our offer",
-    "welcome": "Welcome to PeaceApp",
-    "buttonInfo": "More information",
-    "message1": "Please, log in to start",
-    "email": "E-mail",
-    "password": "Password",
-    "login": "Log in",
-    "message2": "Don't have an account? ",
-    "signUp": "Sign up",
-    "message3": "Forgot your password? ",
-    "clickHere": "Click here",
-    "select": "Select your role:",
-    "user": "Create Account",
-    "authority": "Authority",
-    "recover": {
-      "back": "Go Back",
-      "message": "If you have forgotten your password, please enter your registered email. Upon confirming your account, we will send you a link to reset your password.",
-      "know": "Know your password? ",
-      "send": "Accept",
-      "alert": "You must send a valid email",
-      "changePasswordTitle": "Change Password",
-      "newPassword": "New Password",
-      "confirmPassword": "Confirm Password",
-      "submit": "Save",
-      "success": "Password changed successfully!",
-      "error": "Could not change the password. Please try again later.",
-      "required": "All fields are required.",
-      "mismatch": "Passwords do not match.",
-      "missingEmail": "Email or active session not found."
-    },
-    "errorInvalidCaptcha": "Incorrect code, please try again.",
-    "errorInvalidCredentials": "Incorrect credentials.",
-    "errorEmailNotFound": "The email address does not exist.",
-    "errorEmailCheck": "Error verifying the email address.",
-    "captchaPlaceholder": "Enter the code"
-  },
-  "userForm": {
-    "message": "Please fill in the required details to create your account",
-    "firstname": "Firstname",
-    "lastname": "Lastname",
-    "email": "Email",
-    "phone": "Phone Number",
-    "password": "Password",
-    "confirm_password": "Confirm Password",
-    "term": "Accept Terms of Service and Security Policies",
-    "submit": "Submit",
+  "common": {
     "close": "Close",
-    "question1": "How do I change the language?",
-    "question2": "Where can I see my data?",
-    "question3": "How do I submit a report?",
-    "answer1": "Click the language icon and select your preference.",
-    "answer2": "In the user profile section.",
-    "answer3": "Click the report icon, fill out the form with the required data, and click submit.",
-    "terms": {
-      "title1": "1. Acceptance of Terms",
-      "content1": "By accessing and using this platform, you agree to comply with these terms and conditions, as well as our Privacy Policy. If you do not agree, please do not use the service.",
-      "title2": "2. User Rights",
-      "item2_1": "Service Access: Right to continuously access the platform as long as your account is active and compliant with these terms.",
-      "item2_2": "Features: Use of all tools available based on your access level, including the interactive heat map and incident reporting.",
-      "item2_3": "Privacy: Protection of your personal data according to applicable laws.",
-      "title3": "3. User Obligations",
-      "item3_1": "Proper Use: Use the platform lawfully, without defamatory, illegal, or rights-infringing content.",
-      "item3_2": "Accuracy: Responsibility for the truthfulness of information provided, especially in incident reports.",
-      "item3_3": "Security: Maintain credential confidentiality and be accountable for all activity under your account.",
-      "title4": "4. Usage Restrictions",
-      "item4_1": "Commercial Use: Unauthorized commercial use of the platform or data is prohibited.",
-      "item4_2": "Unauthorized Access: Attempting to access restricted areas is not allowed.",
-      "item4_3": "Interference: Actions that affect performance or availability are forbidden.",
-      "title5": "5. Provider Responsibilities",
-      "item5_1": "Availability: Maintain platform operations, notifying users of scheduled maintenance.",
-      "item5_2": "Data Protection: Apply technical and organizational security measures.",
-      "item5_3": "Support: Provide technical support through established channels.",
-      "title6": "6. Provider Limitations",
-      "item6_1": "Account Suspension: Right to suspend or delete accounts that breach these terms.",
-      "item6_2": "Modifications: Ability to temporarily update or restrict features due to maintenance.",
-      "title7": "7. Intellectual Property",
-      "content7": "All rights to the platform, its design, and content belong exclusively to the service provider. Unauthorized reproduction is prohibited.",
-      "title8": "8. Limitation of Liability",
-      "item8_1": "Not responsible for indirect damages or data loss.",
-      "item8_2": "Not responsible for user-generated content.",
-      "item8_3": "Not responsible for service interruptions due to external factors.",
-      "title9": "9. Modifications",
-      "content9": "These terms may be updated periodically. Continued use after updates implies acceptance.",
-      "lastUpdate": "Last Update"
-    }
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "remove": "Remove",
+    "apply": "Apply",
+    "search": "Search",
+    "loading": "Loading…",
+    "optional": "optional",
+    "all": "All",
+    "unread": "Unread",
+    "markAllRead": "Mark all as read",
+    "language": "Language",
+    "pagination": "Pagination",
+    "pageOf": "Page {page} of {total}"
   },
-  "authorityForm": {
-    "message": "Please fill in the indicated information to create your account",
-    "municipality_name": "Municipality Name",
+  "nav": {
+    "main": "Main navigation",
+    "map": "Map",
+    "reports": "Reports",
+    "alerts": "Alerts",
+    "notifications": "Inbox",
+    "contacts": "Contacts",
+    "admin": "Admin",
+    "account": "Account",
+    "profile": "My profile",
+    "logout": "Sign out"
+  },
+  "footer": {
+    "terms": "Terms of service",
+    "questions": "FAQ"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Cannot reach the server. Check your connection and try again.",
+    "forbidden": "You are not allowed to do this.",
+    "notFound": "We could not find what you are looking for.",
+    "server": "The server had a problem. Please try later.",
+    "http_401": "Your session is not valid.",
+    "http_409": "That action conflicts with the current state.",
+    "http_400": "Some data is invalid."
+  },
+  "auth": {
+    "tagline": "A safer city, built together.",
+    "feature1": "Report map and risk zones",
+    "feature2": "Alerts when something happens near you",
+    "feature3": "Trusted contacts",
+    "more": "Learn more",
+    "welcome": "Welcome to PeaceApp",
+    "loginSubtitle": "Sign in to continue",
     "email": "Email",
     "password": "Password",
-    "confirm_password": "Confirm Password",
-    "fiscal_id": "Fiscal Identification",
-    "address": "Office Address",
-    "contact_number": "Contact Number",
-    "description": "Description",
-    "terms_and_policies": "Accept Terms of Service and Security Policies",
-    "next": "Next",
-    "subscription_header": "Governmental Subscription:"
+    "login": "Sign in",
+    "forgot": "Forgot your password?",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "badCredentials": "Wrong email or password.",
+    "sessionExpired": "Your session expired. Please sign in again.",
+    "passwordChanged": "Password updated. You can sign in now.",
+    "createAccount": "Create your account",
+    "registerSubtitle": "It only takes a minute",
+    "name": "First name",
+    "lastname": "Last name",
+    "phone": "Phone",
+    "passwordHint": "Between 8 and 72 characters.",
+    "confirmPassword": "Confirm password",
+    "mismatch": "Passwords do not match.",
+    "accept": "I accept the",
+    "signUpAction": "Create account",
+    "haveAccount": "Already have an account?",
+    "recoverTitle": "Recover your password",
+    "recoverSubtitle": "Enter your email and we will send you the instructions.",
+    "recoverSent": "If the email is registered, you will get the instructions in a few minutes. The link lasts 30 minutes.",
+    "haveToken": "I already have the code",
+    "sendLink": "Send instructions",
+    "backToLogin": "Back to sign in",
+    "resetTitle": "New password",
+    "resetSubtitle": "Paste the code you received and choose your new password.",
+    "token": "Recovery code",
+    "newPassword": "New password",
+    "tokenInvalid": "The code is invalid, expired or already used."
   },
-  "payment": {
-    "considerations_heading": "Considerations:",
-    "considerations_content": "Your access is on a monthly basis and will automatically renew every 30 days from activation. If you decide not to continue with the service, you have the option to cancel it at any time from your profile. By doing so, please note that the privileges and subscription will be deactivated once the current billing cycle ends.",
-    "separator": "or pay using credit card",
-    "card_holder_name": "Card holder full name",
-    "card_number": "Card Number",
-    "expiry_cvv": "Expiry Date / CVV",
-    "expiry_date": "Expiry Date",
-    "cvv": "CVV",
-    "checkout": "Checkout"
+  "report": {
+    "typeLabel": "Type",
+    "severityLabel": "Severity",
+    "statusLabel": "Status",
+    "allTypes": "All types",
+    "allSeverities": "Any severity",
+    "allStatuses": "All statuses",
+    "type": {
+      "THEFT": "Theft",
+      "ACCIDENT": "Accident",
+      "LIGHTING": "Poor lighting",
+      "HARASSMENT": "Harassment",
+      "EMERGENCY": "Emergency",
+      "OTHER": "Other"
+    },
+    "severity": {
+      "LOW": "Low",
+      "MEDIUM": "Medium",
+      "HIGH": "High",
+      "CRITICAL": "Critical"
+    },
+    "status": {
+      "PENDING": "Pending",
+      "UNDER_REVIEW": "Under review",
+      "VERIFIED": "Verified",
+      "DISCARDED": "Discarded",
+      "RESOLVED": "Resolved"
+    }
   },
   "reports": {
-    "title": "Report list",
+    "title": "Reports",
+    "subtitle": "What's happening in your community",
+    "new": "New report",
+    "search": "Search by title, detail or address",
     "all": "All",
-    "address_label": "Address",
-    "type_label": "Type:",
-    "date_label": "Date:",
-    "district_label": "District:",
-    "location_label": "Location:",
-    "description_label": "Description:",
-    "user_label": "Date: ",
-    "view_scope": "Filters",
-    "my_reports": "My Reports",
-    "all_reports": "All Reports",
-    "evidence_label": "Evidence:",
-    "clear_filters": "Clear Filters",
-    "no_reports": "No reports available.",
-    "view_evidence": "View Evidence",
-    "button": "New Report"
+    "mine": "My reports",
+    "from": "From",
+    "to": "To",
+    "order": "Order",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "clear": "Clear",
+    "empty": "No reports match these filters."
+  },
+  "reportDetail": {
+    "back": "Back to reports",
+    "notFound": "This report does not exist or was deleted.",
+    "address": "Address",
+    "occurredAt": "Happened",
+    "createdAt": "Published",
+    "moderation": "Moderation",
+    "changeStatus": "Change status to…",
+    "statusChanged": "Status updated.",
+    "transitionNotAllowed": "That status change is not allowed.",
+    "deleted": "Report deleted.",
+    "deleteTitle": "Delete report",
+    "deleteMessage": "Its comments, votes and flags will be deleted too. This cannot be undone."
   },
   "reportForm": {
-    "title": "Report Sending",
-    "subtitle": "Please complete the following fields to help us accurately record the incident.",
-    "type": "Type of Report:",
-    "dateTime": "Date and Time: ",
-    "district": "District: ",
-    "location": "Location: ",
-    "description": "Description: ",
-    "evidence": "Evidence: ",
-    "upload": "Upload File",
-    "send": "Send",
-    "placeholders": {
-      "type": "Select report type",
-      "robbery": "Robbery",
-      "accident": "Accident",
-      "dark_area": "Dark Area",
-      "harassment": "Harassment",
-      "other": "Other",
-      "title": "Title",
-      "location": "Location",
-      "description": "Description"
-    }
+    "title": "New report",
+    "editTitle": "Edit report",
+    "subtitle": "Tell us what happened and mark it on the map.",
+    "selectType": "Select a type",
+    "titleLabel": "Title",
+    "detail": "Details",
+    "occurredAt": "Date and time",
+    "address": "Address",
+    "addressHint": "Filled in automatically when you move the map; you can fix it.",
+    "evidence": "Evidence",
+    "upload": "Upload image",
+    "location": "Location",
+    "mapHint": "Move the map to place the pin on the exact spot.",
+    "send": "Publish report",
+    "created": "Report published.",
+    "updated": "Report updated.",
+    "uploadFailed": "The image could not be uploaded. Please try again.",
+    "needLocation": "Pick a location on the map."
   },
   "map": {
-    "title": "District's Heat Map",
-    "find": "Find Route",
-    "question": "Where do you want to go today?",
-    "latitude": "New Latitude:",
-    "longitude": "New Longitude:",
-    "toggleHeatmap": "Toggle Heatmap",
-    "changeGradient": "Change Gradient",
-    "changeOpacity": "Change Opacity",
-    "changeRadius": "Change Radius",
-    "placeholder": "Search"
+    "searchPlaceholder": "Search a place",
+    "markers": "Reports",
+    "heatmap": "Heat map",
+    "countMarkers": "{n} reports in this area",
+    "countHeat": "{n} reports grouped in this area",
+    "notFound": "We could not find that place.",
+    "locationDenied": "We could not get your location. Check the browser permission.",
+    "myLocation": "My location",
+    "reportHere": "Report here",
+    "viewDetail": "View details",
+    "risk": {
+      "LOW": "Low",
+      "MEDIUM": "Medium",
+      "HIGH": "High",
+      "CRITICAL": "Critical"
+    }
   },
-  "authorityEdit": {
-    "municipality_name": "Name of the Municipality:",
-    "email": "Email:",
-    "contact_number": "Contact Number:",
-    "address": "Office Address:",
-    "description": "Description:",
-    "profile_picture": "Profile Picture:",
-    "confirm_changes": "Confirm Changes"
+  "votes": {
+    "title": "Do you confirm this report?",
+    "confirm": "Confirm",
+    "dispute": "Doubt",
+    "progress": "{net} of {threshold} net confirmations to verify it",
+    "cannot": "You cannot vote on your own report or on a closed one."
   },
-  "userEdit": {
-    "first_name": "Firstname:",
-    "last_name": "Lastname:",
-    "email": "Email:",
-    "phone": "Phone Number:",
-    "password": "Password:",
-    "profileImage": "Profile Picture:",
-    "confirmDelete": "Are you sure you want to delete your account?"
+  "comments": {
+    "title": "Comments",
+    "placeholder": "Write a comment…",
+    "send": "Send",
+    "empty": "No comments yet.",
+    "you": "You",
+    "neighbor": "Neighbor #{id}",
+    "removed": "Comment removed."
+  },
+  "flag": {
+    "title": "Report abuse",
+    "reason": "Reason",
+    "details": "Details (optional)",
+    "submit": "Send flag",
+    "sent": "Thanks, we will review it.",
+    "already": "You already flagged this content.",
+    "reasons": {
+      "SPAM": "Spam",
+      "FALSE_INFORMATION": "False information",
+      "OFFENSIVE": "Offensive content",
+      "DUPLICATE": "Duplicate",
+      "OTHER": "Other"
+    }
+  },
+  "alerts": {
+    "title": "Alerts",
+    "subtitle": "Notices about reports near your location",
+    "tabList": "My alerts",
+    "tabSettings": "Settings",
+    "empty": "You have no alerts.",
+    "emptyUnread": "You have no unread alerts.",
+    "deleteAll": "Delete all",
+    "deleteAllMessage": "All your alerts will be deleted.",
+    "away": "{distance} from you",
+    "saved": "Settings saved.",
+    "location": "Your location",
+    "noLocation": "No location saved yet. Without it you will not get proximity alerts.",
+    "updateLocation": "Update my location",
+    "locationUpdated": "Location updated.",
+    "radius": "Alert radius",
+    "minSeverity": "Minimum severity",
+    "ignoredTypes": "Types you want to ignore",
+    "ignoredHint": "Selected types will not trigger alerts.",
+    "mute": "Mute alerts",
+    "mutedUntil": "Muted until {date}",
+    "keepMute": "Keep muted",
+    "notMuted": "Do not mute",
+    "unmute": "Unmute",
+    "hours": "1 hour | {n} hours",
+    "week": "1 week"
+  },
+  "notifications": {
+    "title": "Inbox",
+    "subtitle": "Everything that happened in your account",
+    "tabList": "History",
+    "tabPrefs": "Preferences",
+    "empty": "Your inbox is empty.",
+    "channels": "Channels",
+    "inApp": "In-app notices",
+    "push": "Push notifications",
+    "pushHint": "Push delivery to the phone is not active on the server yet.",
+    "kinds": "What you want to receive",
+    "saved": "Preferences saved.",
+    "kind": {
+      "PROXIMITY_ALERT": "Proximity alerts",
+      "CONTACT_REQUEST": "Contact requests",
+      "CONTACT_ACCEPTED": "Accepted contacts"
+    }
+  },
+  "contacts": {
+    "title": "Trusted contacts",
+    "subtitle": "People you can count on",
+    "emailPlaceholder": "Person's email",
+    "add": "Send request",
+    "requestSent": "Request sent.",
+    "errNotFound": "No user with that email.",
+    "errExists": "There is already a request or relationship with that person.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "cancel": "Cancel",
+    "block": "Block",
+    "unblock": "Unblock",
+    "accepted": "Contact added.",
+    "declined": "Request declined.",
+    "blocked": "Person blocked.",
+    "removed": "Contact removed.",
+    "cancelled": "Request cancelled.",
+    "unblocked": "Person unblocked.",
+    "blockTitle": "Block person",
+    "blockMessage": "{name} will not be able to send you requests. You can unblock them any time.",
+    "removeTitle": "Remove contact",
+    "removeMessage": "You will stop being trusted contacts.",
+    "tab": {
+      "accepted": "Contacts",
+      "incoming": "Received",
+      "outgoing": "Sent",
+      "blocked": "Blocked"
+    },
+    "empty": {
+      "accepted": "You have no contacts yet.",
+      "incoming": "No pending requests.",
+      "outgoing": "You haven't sent any requests.",
+      "blocked": "You haven't blocked anyone."
+    }
   },
   "profile": {
-    "user": {
-      "email": "Email: ",
-      "phone": "Phone Number: ",
-      "password": "Password: "
-    },
-    "authority": {
-        "email": "Email: ",
-        "contact_number": "Contact Number: ",
-        "office_address": "Office Address: ",
-        "description": "Description: "
-    },
-    "edit": "Edit Profile",
-    "logout": "Log out"
+    "title": "My profile",
+    "changePhoto": "Change photo",
+    "personal": "Personal details",
+    "emailWarning": "If you change your email you will need to sign in again.",
+    "noChanges": "Nothing to save.",
+    "saved": "Profile updated.",
+    "emailChanged": "Email updated. Sign in with the new email.",
+    "emailInUse": "That email is already in use.",
+    "photoUpdated": "Photo updated.",
+    "security": "Security",
+    "currentPassword": "Current password",
+    "updatePassword": "Change password",
+    "passwordChanged": "Password updated.",
+    "wrongCurrent": "The current password is wrong.",
+    "dangerZone": "Danger zone",
+    "deleteWarning": "Deleting your account permanently removes your profile and sign-in data.",
+    "deleteAccount": "Delete my account",
+    "deleteConfirm": "Are you sure you want to delete your account? This cannot be undone.",
+    "deleted": "Your account was deleted."
   },
-    "footer": {
-        "terms": "Terms and Conditions",
-        "questions": "Frequent Questions",
-        "contact": "Contact Us",
-        "about": "About Us"
+  "admin": {
+    "title": "Administration",
+    "subtitle": "Moderation and community quality",
+    "tab": {
+      "metrics": "Metrics",
+      "flags": "Flags",
+      "queue": "Reports",
+      "log": "History"
+    },
+    "m": {
+      "total": "Reports",
+      "verifiedRate": "Verification rate",
+      "attention": "Average handling time",
+      "openFlags": "Open flags",
+      "actionRate": "Flags with action",
+      "byStatus": "Reports by status",
+      "community": "Community",
+      "comments": "Comments",
+      "confirmations": "Confirmations",
+      "disputes": "Doubts",
+      "dismissed": "Dismissed flags",
+      "actionTaken": "Flags with action"
+    },
+    "flagStatus": {
+      "OPEN": "Open",
+      "DISMISSED": "Dismissed",
+      "ACTION_TAKEN": "Action taken"
+    },
+    "noFlags": "No flags in this status.",
+    "target": "Content",
+    "report": "Report",
+    "comment": "Comment",
+    "when": "Date",
+    "resolve": "Resolve",
+    "resolveTitle": "Resolve flag",
+    "resolution": "Resolution",
+    "dismiss": "Dismiss (doesn't touch the content)",
+    "actionTake": "Take action (removes the content)",
+    "note": "Note",
+    "dismissHint": "The content stays as it is.",
+    "actionHint": "A comment is removed; a report becomes discarded. Other open flags on the same content are closed the same way.",
+    "resolved": "Flag resolved.",
+    "alreadyResolved": "That flag was already resolved.",
+    "queueHint": "Open a report to change its status.",
+    "noQueue": "No reports in this status.",
+    "noLog": "No moderation actions yet.",
+    "action": "Action",
+    "logType": {
+      "COMMENT_REMOVED": "Comment removed",
+      "REPORT_DISCARDED": "Report discarded",
+      "FLAG_DISMISSED": "Flag dismissed"
     }
+  },
+  "faq": {
+    "q1": "How do I change the language?",
+    "a1": "Click the language icon and select your preference.",
+    "q2": "Where can I see my data?",
+    "a2": "In the user profile section.",
+    "q3": "How do I submit a report?",
+    "a3": "Click the report icon, fill out the form with the required data, and click submit."
+  },
+  "terms": {
+    "sections": [
+      {
+        "title": "1. Acceptance of Terms",
+        "content": "By accessing and using this platform, you agree to comply with these terms and conditions, as well as our Privacy Policy. If you do not agree, please do not use the service."
+      },
+      {
+        "title": "2. User Rights",
+        "items": [
+          "Service Access: Right to continuously access the platform as long as your account is active and compliant with these terms.",
+          "Features: Use of all tools available based on your access level, including the interactive heat map and incident reporting.",
+          "Privacy: Protection of your personal data according to applicable laws."
+        ]
+      },
+      {
+        "title": "3. User Obligations",
+        "items": [
+          "Proper Use: Use the platform lawfully, without defamatory, illegal, or rights-infringing content.",
+          "Accuracy: Responsibility for the truthfulness of information provided, especially in incident reports.",
+          "Security: Maintain credential confidentiality and be accountable for all activity under your account."
+        ]
+      },
+      {
+        "title": "4. Usage Restrictions",
+        "items": [
+          "Commercial Use: Unauthorized commercial use of the platform or data is prohibited.",
+          "Unauthorized Access: Attempting to access restricted areas is not allowed.",
+          "Interference: Actions that affect performance or availability are forbidden."
+        ]
+      },
+      {
+        "title": "5. Provider Responsibilities",
+        "items": [
+          "Availability: Maintain platform operations, notifying users of scheduled maintenance.",
+          "Data Protection: Apply technical and organizational security measures.",
+          "Support: Provide technical support through established channels."
+        ]
+      },
+      {
+        "title": "6. Provider Limitations",
+        "items": [
+          "Account Suspension: Right to suspend or delete accounts that breach these terms.",
+          "Modifications: Ability to temporarily update or restrict features due to maintenance."
+        ]
+      },
+      {
+        "title": "7. Intellectual Property",
+        "content": "All rights to the platform, its design, and content belong exclusively to the service provider. Unauthorized reproduction is prohibited."
+      },
+      {
+        "title": "8. Limitation of Liability",
+        "items": [
+          "Not responsible for indirect damages or data loss.",
+          "Not responsible for user-generated content.",
+          "Not responsible for service interruptions due to external factors."
+        ]
+      },
+      {
+        "title": "9. Modifications",
+        "content": "These terms may be updated periodically. Continued use after updates implies acceptance."
+      }
+    ],
+    "lastUpdate": "Last Update"
+  }
 }

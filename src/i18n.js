@@ -1,14 +1,15 @@
-import en from "./locales/en.json"
-import es from "./locales/es.json"
+import { createI18n } from 'vue-i18n'
+import es from './locales/es.json'
+import en from './locales/en.json'
 
-import{createI18n} from "vue-i18n";
-const savedLanguage = localStorage.getItem('language') || 'en';
+const saved = localStorage.getItem('language')
+const locale = saved || (navigator.language?.startsWith('en') ? 'en' : 'es')
+document.documentElement.lang = locale
 
-const i18n =createI18n( {
-    locale: savedLanguage,
-    fallbackLocale: "en",
+export default createI18n({
+    legacy: false,
     globalInjection: true,
-    messages: {en, es}
-});
-
-export default i18n;
+    locale,
+    fallbackLocale: 'es',
+    messages: { es, en }
+})
