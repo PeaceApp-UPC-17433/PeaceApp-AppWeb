@@ -47,9 +47,11 @@ test('alert and settings mappers translate category names', () => {
 test('profile mappers translate between UI and backend names', () => {
     const profile = toProfile({ id: '1', email: 'a@b.c', role: 'MODERADOR', firstName: 'Ana', lastName: 'Q', phoneNumber: '9', avatarUrl: 'u' })
     assert.deepEqual([profile.name, profile.lastname, profile.phonenumber, profile.profile_image], ['Ana', 'Q', '9', 'u'])
+    assert.equal(profile.emailVerified, true)
+    assert.equal(toProfile({ id: '2', emailVerified: false }).emailVerified, false)
     assert.deepEqual(fromProfilePatch({ name: 'Bea', profile_image: 'x' }), { firstName: 'Bea', avatarUrl: 'x' })
-    assert.deepEqual(fromSignUp({ email: 'e', password: 'p', name: 'n', lastname: 'l', phonenumber: 't' }),
-        { email: 'e', password: 'p', firstName: 'n', lastName: 'l', phoneNumber: 't' })
+    assert.deepEqual(fromSignUp({ email: 'e', password: 'p', name: 'n', lastname: 'l', phonenumber: 't', locale: 'en' }),
+        { email: 'e', password: 'p', firstName: 'n', lastName: 'l', phoneNumber: 't', locale: 'en' })
 })
 
 test('toFlag renames INCIDENT target to REPORT for the admin screen', () => {

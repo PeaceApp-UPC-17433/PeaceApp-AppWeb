@@ -1,4 +1,7 @@
 <script setup>
+import PasswordInput from '@/components/ui/PasswordInput.vue'
+import PasswordRules from '@/components/auth/PasswordRules.vue'
+import { isStrongPassword } from '@/config/password.js'
 import { reactive, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -9,6 +12,7 @@ import { uploadImage } from '@/api/cloudinary.api.js'
 import { useToast } from '@/composables/useToast.js'
 import { useApiError } from '@/composables/useApiError.js'
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
+import MfaSection from '@/components/auth/MfaSection.vue'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -158,22 +162,24 @@ async function deleteAccount() {
       <div class="form-grid">
         <div class="field full">
           <label for="pw-current">{{ $t('profile.currentPassword') }}</label>
-          <input id="pw-current" v-model="pass.current" class="input" type="password" required autocomplete="current-password" />
+          <PasswordInput id="pw-current" v-model="pass.current" required />
         </div>
         <div class="field">
           <label for="pw-new">{{ $t('auth.newPassword') }}</label>
-          <input id="pw-new" v-model="pass.next" class="input" type="password" minlength="8" maxlength="72" required autocomplete="new-password" />
-          <span class="hint">{{ $t('auth.passwordHint') }}</span>
+          <PasswordInput id="pw-new" v-model="pass.next" autocomplete="new-password" required />
+          <PasswordRules :value="pass.next" />
         </div>
         <div class="field">
           <label for="pw-confirm">{{ $t('auth.confirmPassword') }}</label>
-          <input id="pw-confirm" v-model="pass.confirm" class="input" :class="{ invalid: passMismatch }" type="password" required autocomplete="new-password" />
+          <PasswordInput id="pw-confirm" v-model="pass.confirm" :invalid="!!passMismatch" autocomplete="new-password" required />
           <span v-if="passMismatch" class="field-error">{{ $t('auth.mismatch') }}</span>
         </div>
       </div>
       <p v-if="passError" class="alert-box error" role="alert">{{ passError }}</p>
-      <div><button class="btn" :disabled="passBusy">{{ $t('profile.updatePassword') }}</button></div>
+      <div><button class="btn" :disabled="passBusy || !isStrongPassword(pass.next) || !pass.confirm || !!passMismatch">{{ $t('profile.updatePassword') }}</button></div>
     </form>
+
+    <MfaSection />
 
     <section class="card stack danger-zone">
       <h3>{{ $t('profile.dangerZone') }}</h3>

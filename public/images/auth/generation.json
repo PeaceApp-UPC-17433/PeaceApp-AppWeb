@@ -1,0 +1,14 @@
+{
+  "tool": "image_gen.imagegen (built-in)",
+  "shared_prompt": "Use case: stylized-concept. Create a premium editorial 3D clay illustration for Peace App, a Peruvian community safety app login carousel. Landscape 1536x1024. Soft matte porcelain materials, rounded geometry, sophisticated restrained blue palette #123e57 #1f79aa #55b0db, pale icy blue seamless background #eef6fa. Isometric miniature neighborhood with subtle Lima architecture, warm human welcoming mood, gentle studio shadows, generous empty margins. No text, letters, numbers, logos, watermarks or UI typography. Not a screenshot. ",
+  "scenes": {
+    "report.webp": "A small blue smartphone beside a miniature pedestrian street and streetlamp, a blue map location pin marking a broken streetlight, one friendly Latin American adult resident submitting a report. Centered cohesive still-life composition.",
+    "map.webp": "A folded miniature city map with raised white neighborhood blocks, small trees and three blue location pins connected by a subtle path, a small blue bell notification symbol. Centered cohesive still-life composition.",
+    "community.webp": "Three friendly Latin American adult neighbors standing together beside a small white and blue neighborhood building and trees, a rounded blue shield with a simple check symbol representing community care. Centered cohesive still-life composition."
+  },
+  "background_edit": {
+    "tool": "image_gen.imagegen (built-in)",
+    "transparent_background": true,
+    "prompt": "Remove the pale blue background surrounding the miniature scene, replace with genuine alpha transparency. Preserve foreground people, architecture, trees, objects, colors, composition and framing. No rectangular background."
+  }
+}

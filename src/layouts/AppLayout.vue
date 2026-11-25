@@ -1,4 +1,5 @@
 <script setup>
+import EmailVerificationPrompt from '@/components/auth/EmailVerificationPrompt.vue'
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { session } from '@/stores/session.js'
@@ -71,6 +72,7 @@ onBeforeUnmount(() => {
       </div>
     </header>
 
+    <EmailVerificationPrompt v-if="session.state.profile" />
     <main class="content"><RouterView :key="$route.fullPath" /></main>
     <LegalDialog :model-value="!!legal" :kind="legal || 'faq'" @update:model-value="legal = null" />
   </div>

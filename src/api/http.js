@@ -10,11 +10,13 @@ export const tokenStore = {
 }
 
 export class ApiError extends Error {
-    constructor(message, status, errors = null, requestId = null) {
+    constructor(message, status, errors = null, requestId = null, extra = {}) {
         super(message)
         this.status = status
         this.errors = errors
         this.requestId = requestId
+        this.code = extra.code || null
+        this.retryAfterSeconds = extra.retryAfterSeconds ?? null
     }
 }
 
@@ -51,7 +53,9 @@ http.interceptors.response.use(
         if (res.status === 401 && !isAuthCall && tokenStore.get()) onUnauthorized()
         const data = res.data && typeof res.data === 'object' ? res.data : {}
         const requestId = res.headers?.['x-request-id'] || data.requestId || null
-        return Promise.reject(new ApiError(data.detail || data.message || `http_${res.status}`, res.status, fieldErrors(data.errors), requestId))
+        if (data.code === 'EMAIL_NOT_VERIFIED') window.dispatchEvent(new CustomEvent('email-verification-required'))
+        return Promise.reject(new ApiError(data.detail || data.message || `http_${res.status}`, res.status, fieldErrors(data.errors), requestId,
+            { code: data.code, retryAfterSeconds: data.retryAfterSeconds }))
     }
 )
 

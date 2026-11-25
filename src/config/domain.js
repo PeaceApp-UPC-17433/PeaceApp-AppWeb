@@ -1,17 +1,12 @@
-import robTag from '@/assets/rob_tag.png'
-import carTag from '@/assets/car_tag.png'
-import illumTag from '@/assets/illumination_tag.png'
-import acosoTag from '@/assets/acoso_tag.png'
-import redMarker from '@/assets/red_marker.png'
 
 // Valores del contrato del backend (README, fases 2 a 4). `color` alimenta badges y mapa.
 export const REPORT_TYPES = [
-    { value: 'ROBO', icon: 'pi-wallet', image: robTag },
-    { value: 'HURTO', icon: 'pi-shopping-bag', image: robTag },
-    { value: 'ACCIDENTE_TRANSITO', icon: 'pi-car', image: carTag },
-    { value: 'AGRESION', icon: 'pi-exclamation-triangle', image: acosoTag },
-    { value: 'VANDALISMO', icon: 'pi-lightbulb', image: illumTag },
-    { value: 'OTRO', icon: 'pi-ellipsis-h', image: redMarker }
+    { value: 'ROBO', icon: 'pi-wallet' },
+    { value: 'HURTO', icon: 'pi-shopping-bag' },
+    { value: 'ACCIDENTE_TRANSITO', icon: 'pi-car' },
+    { value: 'AGRESION', icon: 'pi-exclamation-triangle' },
+    { value: 'VANDALISMO', icon: 'pi-lightbulb' },
+    { value: 'OTRO', icon: 'pi-ellipsis-h' }
 ]
 
 export const SEVERITIES = [

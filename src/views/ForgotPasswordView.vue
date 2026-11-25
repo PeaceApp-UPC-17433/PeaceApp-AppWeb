@@ -26,7 +26,8 @@ async function submit() {
 
 <template>
   <div class="card stack">
-    <div>
+    <div class="auth-heading">
+      <p class="eyebrow">{{ $t('auth.recoverLabel') }}</p>
       <h1>{{ $t('auth.recoverTitle') }}</h1>
       <p class="muted">{{ $t('auth.recoverSubtitle') }}</p>
     </div>

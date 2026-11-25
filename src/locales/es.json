@@ -50,8 +50,8 @@
     "feature2": "Alertas cuando algo ocurre cerca de ti",
     "feature3": "Contactos de confianza",
     "more": "Más información",
-    "welcome": "Bienvenido a PeaceApp",
-    "loginSubtitle": "Inicia sesión para continuar",
+    "welcome": "Qué bueno tenerte de vuelta",
+    "loginSubtitle": "Inicia sesión para estar al tanto de lo que pasa cerca de ti.",
     "email": "Correo electrónico",
     "password": "Contraseña",
     "login": "Iniciar sesión",
@@ -74,7 +74,7 @@
     "haveAccount": "¿Ya tienes cuenta?",
     "recoverTitle": "Recupera tu contraseña",
     "recoverSubtitle": "Ingresa tu correo y te enviaremos las instrucciones.",
-    "recoverSent": "Si el correo está registrado, recibirás las instrucciones en unos minutos. El enlace dura 30 minutos.",
+    "recoverSent": "Si el correo está registrado, te enviamos un enlace para restablecer tu contraseña. Revisa tu bandeja (y el spam). Vence en 30 minutos.",
     "haveToken": "Ya tengo el código",
     "sendLink": "Enviar instrucciones",
     "backToLogin": "Volver a iniciar sesión",
@@ -82,7 +82,52 @@
     "resetSubtitle": "Pega el código que recibiste y elige tu nueva contraseña.",
     "token": "Código de recuperación",
     "newPassword": "Nueva contraseña",
-    "tokenInvalid": "El código es inválido, venció o ya fue usado."
+    "tokenInvalid": "El código es inválido, venció o ya fue usado.",
+    "accessLabel": "Tu comunidad empieza aquí",
+    "emailPlaceholder": "tu.correo{'@'}ejemplo.com",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "privateAccess": "Tu cuenta, tu espacio privado.",
+    "carousel": {
+      "label": "Descubre Peace App",
+      "eyebrow": "Una ciudad que cuidamos juntos",
+      "controls": "Controles del carrusel",
+      "report": {
+        "title": "Lo que ves,",
+        "accent": "puede hacer la diferencia.",
+        "description": "Reporta un incidente y ayuda a tu comunidad a conocer lo que ocurre en su barrio."
+      },
+      "map": {
+        "title": "Conoce tu entorno,",
+        "accent": "muévete con información.",
+        "description": "Consulta reportes en el mapa y recibe alertas de lo que pasa cerca de ti."
+      },
+      "community": {
+        "title": "Tu tranquilidad,",
+        "accent": "también se construye juntos.",
+        "description": "Conecta con personas de confianza y sé parte de una comunidad que se cuida."
+      }
+    },
+    "registerLabel": "Únete a tu comunidad",
+    "recoverLabel": "Recupera tu acceso",
+    "strength": {
+      "label": "Fuerza de la contraseña",
+      "idle": "Escribe una contraseña",
+      "weak": "Débil",
+      "fair": "Regular",
+      "good": "Buena",
+      "strong": "Fuerte"
+    },
+    "rules": {
+      "length": "Entre 8 y 72 caracteres",
+      "lower": "Una minúscula",
+      "upper": "Una mayúscula",
+      "number": "Un número",
+      "met": "cumplida",
+      "pending": "pendiente"
+    },
+    "match": "Las contraseñas coinciden"
   },
   "report": {
     "typeLabel": "Tipo",
@@ -435,5 +480,61 @@
       }
     ],
     "lastUpdate": "Fecha de última actualización"
+  },
+  "verify": {
+    "title": "Verifica tu correo",
+    "body": "Enviamos un código de 6 dígitos a {email}. Ingrésalo para publicar, votar y comentar.",
+    "placeholder": "000000",
+    "confirm": "Verificar",
+    "resend": "Reenviar código",
+    "resendIn": "Reenviar en {s} s",
+    "later": "Más tarde",
+    "pill": "Verificar correo",
+    "success": "¡Correo verificado!",
+    "invalid": "El código es incorrecto o venció.",
+    "tooMany": "Demasiados intentos. Pide un código nuevo.",
+    "sent": "Te enviamos un código nuevo.",
+    "required": "Verifica tu correo para realizar esta acción.",
+    "already": "Tu correo ya está verificado.",
+    "label": "Código de verificación"
+  },
+  "mfa": {
+    "step": "Verificación en dos pasos",
+    "loginTitle": "Ingresa tu código",
+    "loginHint": "Abre tu aplicación autenticadora y escribe el código de 6 dígitos de PeaceApp.",
+    "recoveryTitle": "Código de recuperación",
+    "recoveryHint": "Escribe uno de los códigos de recuperación que guardaste. Cada uno sirve una sola vez.",
+    "codeLabel": "Código de verificación",
+    "verify": "Verificar",
+    "useRecovery": "Usar un código de recuperación",
+    "useApp": "Usar mi aplicación autenticadora",
+    "back": "Volver",
+    "invalid": "El código es incorrecto.",
+    "locked": "Demasiados intentos. Intenta de nuevo en {s} min.",
+    "expired": "La verificación venció. Inicia sesión de nuevo.",
+    "requiredForStaff": "Activa la verificación en dos pasos en tu perfil para usar las funciones de moderación.",
+    "title": "Verificación en dos pasos",
+    "on": "Activa",
+    "off": "Desactivada",
+    "offHint": "Agrega una capa extra: además de tu contraseña pediremos un código de tu aplicación autenticadora.",
+    "onHint": "Tu cuenta pide un código al iniciar sesión. Códigos de recuperación disponibles: {n}.",
+    "enable": "Activar verificación",
+    "activate": "Activar",
+    "disable": "Desactivar",
+    "regenerate": "Nuevos códigos de recuperación",
+    "step1": "Instala una aplicación autenticadora (Google Authenticator, Microsoft Authenticator, Authy o 1Password).",
+    "step2": "Escanea este código QR con la aplicación.",
+    "step3": "Escribe el código de 6 dígitos que aparece para confirmar.",
+    "qrAlt": "Código QR para la aplicación autenticadora",
+    "manual": "¿No puedes escanear? Escribe esta clave manualmente:",
+    "disableHint": "Para desactivarla confirma tu contraseña y un código de tu aplicación o de recuperación.",
+    "regenerateHint": "Los códigos anteriores dejarán de funcionar. Confirma tu contraseña y un código vigente.",
+    "codesHint": "Guarda estos códigos en un lugar seguro. Si pierdes tu teléfono, son la única forma de entrar. No los volveremos a mostrar.",
+    "copy": "Copiar",
+    "download": "Descargar",
+    "copied": "Códigos copiados.",
+    "saved": "Ya guardé mis códigos de recuperación",
+    "done": "Listo",
+    "disabled": "Verificación en dos pasos desactivada."
   }
 }

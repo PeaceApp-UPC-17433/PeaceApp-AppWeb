@@ -71,6 +71,9 @@ export const toProfile = (me) => ({
     id: me.id,
     email: me.email,
     role: me.role,
+    emailVerified: me.emailVerified !== false,
+    mfaEnabled: me.mfaEnabled === true,
+    locale: me.locale || 'es',
     name: me.firstName || '',
     lastname: me.lastName || '',
     phonenumber: me.phoneNumber || '',
@@ -92,7 +95,8 @@ export const fromSignUp = (form) => ({
     password: form.password,
     firstName: form.name,
     lastName: form.lastname,
-    phoneNumber: form.phonenumber
+    phoneNumber: form.phonenumber,
+    locale: form.locale
 })
 
 const FLAG_TARGETS = { INCIDENT: 'REPORT', COMMENT: 'COMMENT' }
