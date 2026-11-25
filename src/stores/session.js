@@ -1,7 +1,6 @@
 import { reactive, computed } from 'vue'
 import { authApi } from '@/api/auth.api.js'
 import { usersApi } from '@/api/users.api.js'
-import { adminApi } from '@/api/community.api.js'
 import { tokenStore, setUnauthorizedHandler } from '@/api/http.js'
 
 const EMAIL_KEY = 'userEmail'
@@ -14,19 +13,11 @@ const state = reactive({
     ready: false
 })
 
-// El backend no expone el rol: un 200 en un endpoint de admin lo confirma, un 403 lo descarta.
-async function detectAdmin() {
-    try {
-        await adminApi.flags({ status: 'OPEN', size: 1 })
-        state.isAdmin = true
-    } catch {
-        state.isAdmin = false
-    }
-}
+const MODERATION_ROLES = ['ADMINISTRADOR', 'MODERADOR']
 
 async function loadProfile() {
-    state.profile = await usersApi.getByEmail(state.email)
-    await detectAdmin()
+    state.profile = await usersApi.me()
+    state.isAdmin = MODERATION_ROLES.includes(state.profile.role)
 }
 
 function clear() {
@@ -90,7 +81,7 @@ setUnauthorizedHandler(async () => {
     if (verifying) return
     verifying = true
     try {
-        await usersApi.getByEmail(state.email)
+        await usersApi.me()
         return // el token sigue siendo válido: el 401 era de otro endpoint
     } catch (e) {
         if (e.status !== 401) return

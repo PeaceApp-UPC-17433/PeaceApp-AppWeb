@@ -1,15 +1,15 @@
 import { reactive } from 'vue'
 import { alertsApi } from '@/api/alerts.api.js'
-import { notificationsApi } from '@/api/notifications.api.js'
+import { contactsApi } from '@/api/contacts.api.js'
 import { env } from '@/config/env.js'
 
-const state = reactive({ alerts: 0, notifications: 0 })
+const state = reactive({ alerts: 0, contacts: 0 })
 let timer = null
 
 async function refresh() {
-    const [a, n] = await Promise.allSettled([alertsApi.unreadCount(), notificationsApi.unreadCount()])
+    const [a, c] = await Promise.allSettled([alertsApi.unreadCount(), contactsApi.incoming()])
     if (a.status === 'fulfilled') state.alerts = a.value.count ?? 0
-    if (n.status === 'fulfilled') state.notifications = n.value.count ?? 0
+    if (c.status === 'fulfilled') state.contacts = c.value.length
 }
 
 export const badges = {
@@ -24,6 +24,6 @@ export const badges = {
         clearInterval(timer)
         timer = null
         state.alerts = 0
-        state.notifications = 0
+        state.contacts = 0
     }
 }

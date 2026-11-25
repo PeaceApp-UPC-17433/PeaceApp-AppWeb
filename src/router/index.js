@@ -33,7 +33,7 @@ const router = createRouter({
                 { path: 'reports/:id', name: 'report-detail', component: () => import('@/views/ReportDetailView.vue'), props: true },
                 { path: 'reports/:id/edit', name: 'report-edit', component: () => import('@/views/ReportFormView.vue'), props: true },
                 { path: 'alerts', name: 'alerts', component: () => import('@/views/AlertsView.vue') },
-                { path: 'notifications', name: 'notifications', component: () => import('@/views/NotificationsView.vue') },
+                { path: 'notifications', redirect: '/alerts' },
                 { path: 'contacts', name: 'contacts', component: () => import('@/views/ContactsView.vue') },
                 { path: 'profile', name: 'profile', component: () => import('@/views/ProfileView.vue') },
                 { path: 'admin', name: 'admin', component: () => import('@/views/AdminView.vue'), meta: { requiresAdmin: true } }

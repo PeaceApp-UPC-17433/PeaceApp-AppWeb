@@ -53,7 +53,7 @@ function addMarker(p) {
   const el = document.createElement('button')
   el.className = 'pa-marker'
   el.setAttribute('aria-label', t(`report.type.${p.type}`))
-  el.style.backgroundImage = `url('${(typeMeta[p.type] || typeMeta.OTHER).image}')`
+  el.style.backgroundImage = `url('${(typeMeta[p.type] || typeMeta.OTRO).image}')`
   el.addEventListener('click', (ev) => { ev.stopPropagation(); select(p.id) })
   const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' }).setLngLat([p.longitude, p.latitude]).addTo(map.value)
   markers.push(marker)
@@ -113,14 +113,14 @@ function setupHeatLayers() {
       'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 10, 20, 16, 60],
       'heatmap-opacity': 0.75,
       'heatmap-color': ['interpolate', ['linear'], ['heatmap-density'],
-        0, 'rgba(46,158,107,0)', 0.25, RISK_COLORS.LOW, 0.5, RISK_COLORS.MEDIUM, 0.75, RISK_COLORS.HIGH, 1, RISK_COLORS.CRITICAL]
+        0, 'rgba(46,158,107,0)', 0.25, RISK_COLORS.LOW, 0.5, RISK_COLORS.MEDIUM, 0.75, RISK_COLORS.HIGH, 1, RISK_COLORS.HIGH]
     }
   })
   map.value.addLayer({
     id: 'heat-cells', type: 'circle', source: HEAT_SOURCE, minzoom: 13,
     paint: {
       'circle-radius': ['interpolate', ['linear'], ['get', 'count'], 1, 8, 20, 22],
-      'circle-color': ['match', ['get', 'risk'], 'LOW', RISK_COLORS.LOW, 'MEDIUM', RISK_COLORS.MEDIUM, 'HIGH', RISK_COLORS.HIGH, RISK_COLORS.CRITICAL],
+      'circle-color': ['match', ['get', 'risk'], 'LOW', RISK_COLORS.LOW, 'MEDIUM', RISK_COLORS.MEDIUM, 'HIGH', RISK_COLORS.HIGH, RISK_COLORS.HIGH],
       'circle-opacity': 0.35, 'circle-stroke-width': 1, 'circle-stroke-color': '#fff'
     }
   })

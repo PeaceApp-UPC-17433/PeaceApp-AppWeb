@@ -34,7 +34,7 @@ const votePanel = ref(null)
 
 const isOwner = computed(() => report.value?.idUser === session.profileId.value)
 const canEdit = computed(() => isOwner.value || session.state.isAdmin)
-const closed = computed(() => ['DISCARDED', 'RESOLVED'].includes(report.value?.status))
+const closed = computed(() => ['DESCARTADO'].includes(report.value?.status))
 const nextStatuses = computed(() => STATUS_TRANSITIONS[report.value?.status] || [])
 
 async function load() {

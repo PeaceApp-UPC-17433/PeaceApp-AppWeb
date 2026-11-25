@@ -32,7 +32,7 @@ const map = shallowRef(null)
 let geoSeq = 0
 
 const form = reactive({
-  title: '', detail: '', type: '', severity: 'MEDIUM', occurredAt: '', address: '', image: '', latitude: null, longitude: null
+  title: '', detail: '', type: '', occurredAt: '', address: '', image: '', latitude: null, longitude: null
 })
 
 // <input type="datetime-local"> trabaja en hora local, el backend en ISO-8601.
@@ -94,7 +94,6 @@ async function submit() {
     title: form.title.trim(),
     detail: form.detail.trim() || undefined,
     type: form.type,
-    severity: form.severity,
     occurredAt: new Date(form.occurredAt).toISOString(),
     latitude: form.latitude,
     longitude: form.longitude,
@@ -120,7 +119,7 @@ onMounted(async () => {
       const r = await reportsApi.get(props.id)
       if (r.idUser !== session.profileId.value && !session.state.isAdmin) return router.replace({ name: 'report-detail', params: { id: props.id } })
       Object.assign(form, {
-        title: r.title, detail: r.detail || '', type: r.type, severity: r.severity, address: r.address,
+        title: r.title, detail: r.detail || '', type: r.type, address: r.address,
         image: r.image || '', occurredAt: toLocalInput(r.occurredAt), latitude: r.latitude, longitude: r.longitude
       })
       center = { lat: r.latitude, lng: r.longitude }
@@ -164,12 +163,6 @@ onBeforeUnmount(() => map.value?.remove())
               <option v-for="ty in REPORT_TYPES" :key="ty.value" :value="ty.value">{{ $t(`report.type.${ty.value}`) }}</option>
             </select>
             <span v-if="errors.type" class="field-error">{{ errors.type }}</span>
-          </div>
-          <div class="field">
-            <label for="rf-sev">{{ $t('report.severityLabel') }}</label>
-            <select id="rf-sev" v-model="form.severity" class="select">
-              <option v-for="s in SEVERITIES" :key="s.value" :value="s.value">{{ $t(`report.severity.${s.value}`) }}</option>
-            </select>
           </div>
           <div class="field full">
             <label for="rf-title">{{ $t('reportForm.titleLabel') }}</label>

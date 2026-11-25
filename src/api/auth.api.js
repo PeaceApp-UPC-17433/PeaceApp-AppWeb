@@ -1,10 +1,13 @@
 import { http, unwrap } from './http.js'
+import { fromSignUp } from './mappers.js'
 
 export const authApi = {
-    signIn: (email, password) => unwrap(http.post('/authentication/sign-in', { username: email, password })),
-    signUp: (payload) => unwrap(http.post('/authentication/sign-up', payload)),
-    changePassword: (currentPassword, newPassword) =>
-        http.put('/authentication/change-password', { currentPassword, newPassword }),
-    forgotPassword: (email) => http.post('/authentication/forgot-password', { email }),
-    resetPassword: (token, newPassword) => http.post('/authentication/reset-password', { token, newPassword })
+    signIn: async (email, password) => {
+        const { accessToken } = await unwrap(http.post('/auth/login', { email, password }))
+        return { token: accessToken }
+    },
+    signUp: (payload) => http.post('/auth/register', fromSignUp(payload)),
+    changePassword: (currentPassword, newPassword) => http.put('/users/me/password', { currentPassword, newPassword }),
+    forgotPassword: (email) => http.post('/auth/forgot-password', { email }),
+    resetPassword: (token, newPassword) => http.post('/auth/reset-password', { token, newPassword })
 }

@@ -16,8 +16,7 @@ const links = computed(() => [
   { to: '/map', icon: 'pi-map', label: 'nav.map' },
   { to: '/reports', icon: 'pi-file', label: 'nav.reports' },
   { to: '/alerts', icon: 'pi-exclamation-triangle', label: 'nav.alerts', badge: badges.state.alerts },
-  { to: '/notifications', icon: 'pi-bell', label: 'nav.notifications', badge: badges.state.notifications },
-  { to: '/contacts', icon: 'pi-users', label: 'nav.contacts' },
+  { to: '/contacts', icon: 'pi-users', label: 'nav.contacts', badge: badges.state.contacts },
   ...(session.state.isAdmin ? [{ to: '/admin', icon: 'pi-shield', label: 'nav.admin' }] : [])
 ])
 

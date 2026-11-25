@@ -9,42 +9,53 @@ export const tokenStore = {
     clear: () => localStorage.removeItem(TOKEN_KEY)
 }
 
-// Error uniforme: el backend responde { message, errors? } (README, convenciones generales).
 export class ApiError extends Error {
-    constructor(message, status, errors = null) {
+    constructor(message, status, errors = null, requestId = null) {
         super(message)
         this.status = status
         this.errors = errors
+        this.requestId = requestId
     }
 }
 
-// La sesión registra aquí qué hacer ante un 401 (evita dependencia circular con el store).
 let onUnauthorized = () => {}
 export const setUnauthorizedHandler = (fn) => { onUnauthorized = fn }
 
 export const http = axios.create({ baseURL: env.apiUrl, timeout: 15000 })
 
+const newRequestId = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`)
+
 http.interceptors.request.use((config) => {
+    config.headers['X-Request-Id'] = newRequestId()
     const token = tokenStore.get()
     if (token) config.headers.Authorization = `Bearer ${token}`
     return config
 })
+
+const fieldErrors = (errors) => {
+    if (!Array.isArray(errors)) return errors && typeof errors === 'object' ? errors : null
+    const parsed = {}
+    errors.forEach((e) => {
+        const [field, ...rest] = String(e).split(': ')
+        parsed[field] = rest.join(': ') || String(e)
+    })
+    return parsed
+}
 
 http.interceptors.response.use(
     (res) => res,
     (error) => {
         const res = error.response
         if (!res) return Promise.reject(new ApiError('network', 0))
-        const isAuthCall = res.config?.url?.startsWith('/authentication/')
+        const isAuthCall = res.config?.url?.startsWith('/auth/')
         if (res.status === 401 && !isAuthCall && tokenStore.get()) onUnauthorized()
         const data = res.data && typeof res.data === 'object' ? res.data : {}
-        return Promise.reject(new ApiError(data.message || `http_${res.status}`, res.status, data.errors || null))
+        const requestId = res.headers?.['x-request-id'] || data.requestId || null
+        return Promise.reject(new ApiError(data.detail || data.message || `http_${res.status}`, res.status, fieldErrors(data.errors), requestId))
     }
 )
 
-// Atajo: devuelve directamente el cuerpo.
 export const unwrap = (promise) => promise.then((res) => res.data)
 
-// Elimina parámetros vacíos antes de armar el query string.
 export const clean = (params = {}) =>
     Object.fromEntries(Object.entries(params).filter(([, v]) => v !== '' && v !== null && v !== undefined))

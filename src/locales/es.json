@@ -92,25 +92,23 @@
     "allSeverities": "Toda severidad",
     "allStatuses": "Todos los estados",
     "type": {
-      "THEFT": "Robo",
-      "ACCIDENT": "Accidente",
-      "LIGHTING": "Mala iluminación",
-      "HARASSMENT": "Acoso",
-      "EMERGENCY": "Emergencia",
-      "OTHER": "Otro"
+      "ROBO": "Robo",
+      "HURTO": "Hurto",
+      "ACCIDENTE_TRANSITO": "Accidente de tránsito",
+      "AGRESION": "Agresión",
+      "VANDALISMO": "Vandalismo",
+      "OTRO": "Otro"
     },
     "severity": {
       "LOW": "Baja",
       "MEDIUM": "Media",
-      "HIGH": "Alta",
-      "CRITICAL": "Crítica"
+      "HIGH": "Alta"
     },
     "status": {
-      "PENDING": "Pendiente",
-      "UNDER_REVIEW": "En revisión",
-      "VERIFIED": "Verificado",
-      "DISCARDED": "Descartado",
-      "RESOLVED": "Resuelto"
+      "PENDIENTE_VALIDACION": "Pendiente de validación",
+      "EN_MODERACION": "En moderación",
+      "VALIDADO": "Validado",
+      "DESCARTADO": "Descartado"
     }
   },
   "reports": {
@@ -193,7 +191,7 @@
     "send": "Enviar",
     "empty": "Aún no hay comentarios.",
     "you": "Tú",
-    "neighbor": "Vecino #{id}",
+    "neighbor": "Vecino",
     "removed": "Comentario retirado."
   },
   "flag": {

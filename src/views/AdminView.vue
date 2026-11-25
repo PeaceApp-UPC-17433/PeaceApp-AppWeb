@@ -25,7 +25,7 @@ const flags = ref({ content: [], page: 0, totalPages: 0, totalElements: 0 })
 const flagStatus = ref('OPEN')
 const log = ref({ content: [], page: 0, totalPages: 0, totalElements: 0 })
 const queue = ref({ content: [], page: 0, totalPages: 0, totalElements: 0 })
-const queueStatus = ref('PENDING')
+const queueStatus = ref('PENDIENTE_VALIDACION')
 
 const resolving = ref(null)
 const resolution = reactive({ value: 'DISMISSED', note: '' })
@@ -148,7 +148,7 @@ onMounted(loadMetrics)
     <!-- Cola de reportes -->
     <template v-else-if="tab === 'queue'">
       <div class="row">
-        <button v-for="s in ['PENDING', 'UNDER_REVIEW', 'VERIFIED']" :key="s" class="chip" :class="{ active: queueStatus === s }" @click="queueStatus = s">{{ $t(`report.status.${s}`) }}</button>
+        <button v-for="s in ['PENDIENTE_VALIDACION', 'EN_MODERACION', 'VALIDADO']" :key="s" class="chip" :class="{ active: queueStatus === s }" @click="queueStatus = s">{{ $t(`report.status.${s}`) }}</button>
       </div>
       <p class="muted small">{{ $t('admin.queueHint') }}</p>
       <LoadingBlock v-if="loading" />

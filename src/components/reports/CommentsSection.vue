@@ -80,7 +80,7 @@ onMounted(() => load())
         <div class="row row-between">
           <span class="muted small">
             <i class="pi pi-user" />
-            {{ c.authorId === session.profileId.value ? $t('comments.you') : $t('comments.neighbor', { id: c.authorId }) }}
+            {{ c.authorId === session.profileId.value ? $t('comments.you') : c.authorName || $t('comments.neighbor') }}
             · {{ relative(c.createdAt) }}
           </span>
           <span>

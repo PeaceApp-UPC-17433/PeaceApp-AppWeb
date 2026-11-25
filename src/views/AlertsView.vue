@@ -148,7 +148,7 @@ onMounted(() => load())
         <li v-for="a in data.content" :key="a.id" class="card item" :class="{ unread: a.status === 'UNREAD' }">
           <RouterLink :to="{ name: 'report-detail', params: { id: a.reportId } }" class="grow link" @click="open(a)">
             <ReportBadges :type="a.type" :severity="a.severity" />
-            <h3>{{ a.title }}</h3>
+            <h3>{{ a.title || $t(`report.type.${a.type}`) }}</h3>
             <p class="muted small">
               <i class="pi pi-compass" /> {{ $t('alerts.away', { distance: distance(a.distanceMeters) }) }}
               · <span :title="dateTime(a.createdAt)">{{ relative(a.createdAt) }}</span>
