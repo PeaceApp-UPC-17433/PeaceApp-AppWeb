@@ -29,7 +29,7 @@ async function submit() {
   busy.value = true
   try {
     await authApi.resetPassword(token.value.trim(), password.value)
-    router.replace({ name: 'login', query: { reset: '1' } })
+    router.replace({ name: 'login', query: { reset: '1' } }).catch(() => {})
   } catch (e) {
     error.value = e.status === 400 ? t('auth.tokenInvalid') : messageOf(e)
   } finally {

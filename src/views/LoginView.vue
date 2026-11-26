@@ -22,7 +22,7 @@ const codeInput = ref(null)
 const shakes = ref(0)
 
 function finish() {
-  router.replace(typeof route.query.redirect === 'string' ? route.query.redirect : '/map')
+  router.replace(typeof route.query.redirect === 'string' ? route.query.redirect : '/map').catch(() => {})
 }
 
 async function submit() {
@@ -66,7 +66,7 @@ async function submitCode() {
 function onCode(event) {
   code.value = recovery.value ? event.target.value.slice(0, 11) : event.target.value.replace(/\D/g, '').slice(0, 6)
   error.value = ''
-  if (!recovery.value && code.value.length === 6) submitCode()
+  if (!recovery.value && code.value.length === 6) submitCode().catch(() => {})
 }
 
 async function toggleRecovery() {

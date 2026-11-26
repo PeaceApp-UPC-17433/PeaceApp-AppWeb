@@ -100,7 +100,7 @@ async function deleteAccount() {
   try {
     await usersApi.remove(profile.value.id)
     session.logout()
-    router.replace({ name: 'login' })
+    router.replace({ name: 'login' }).catch(() => {})
     toast.success(t('profile.deleted'))
   } catch (e) {
     toast.error(messageOf(e))

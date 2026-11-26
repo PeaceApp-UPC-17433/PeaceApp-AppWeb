@@ -158,7 +158,7 @@ async function searchPlace() {
 
 function reportHere() {
   const c = map.value.getCenter()
-  router.push({ name: 'report-new', query: { lat: c.lat.toFixed(6), lng: c.lng.toFixed(6) } })
+  router.push({ name: 'report-new', query: { lat: c.lat.toFixed(6), lng: c.lng.toFixed(6) } }).catch(() => {})
 }
 
 watch(mode, load)

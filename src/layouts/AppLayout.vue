@@ -23,7 +23,7 @@ const links = computed(() => [
 
 function logout() {
   session.logout()
-  router.replace({ name: 'login' })
+  router.replace({ name: 'login' }).catch(() => {})
 }
 
 const onDocClick = () => (menuOpen.value = false)

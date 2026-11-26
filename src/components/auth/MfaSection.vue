@@ -81,7 +81,7 @@ async function confirm() {
 function onCode(event) {
   code.value = event.target.value.replace(/\D/g, '').slice(0, 6)
   error.value = ''
-  if (code.value.length === 6) confirm()
+  if (code.value.length === 6) confirm().catch(() => {})
 }
 
 function cancel() {
@@ -146,7 +146,7 @@ function finishCodes() {
   recoveryCodes.value = []
   remaining.value = Math.max(remaining.value, 8)
   phase.value = 'idle'
-  loadStatus()
+  loadStatus().catch(() => {})
 }
 
 onMounted(loadStatus)

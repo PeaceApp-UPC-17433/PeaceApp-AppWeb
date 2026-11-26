@@ -34,7 +34,7 @@ async function submit() {
     // Se envían solo los campos que el backend acepta; el teléfono es opcional.
     const payload = { ...form, locale: locale.value, email: form.email.trim().toLowerCase(), phonenumber: form.phonenumber.trim() || undefined }
     await session.register(payload)
-    router.replace('/map')
+    router.replace('/map').catch(() => {})
   } catch (e) {
     errors.value = fieldErrors(e)
     error.value = messageOf(e)

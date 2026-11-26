@@ -117,7 +117,7 @@ async function submit() {
   try {
     const saved = editing.value ? await reportsApi.update(props.id, payload) : await reportsApi.create(payload)
     toast.success(t(editing.value ? 'reportForm.updated' : 'reportForm.created'))
-    router.replace({ name: 'report-detail', params: { id: saved.id } })
+    router.replace({ name: 'report-detail', params: { id: saved.id } }).catch(() => {})
   } catch (e) {
     errors.value = fieldErrors(e)
     if (!Object.keys(errors.value).length) toast.error(messageOf(e))

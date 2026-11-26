@@ -59,7 +59,7 @@ async function submit() {
 function onInput(event) {
   code.value = event.target.value.replace(/\D/g, '').slice(0, 6)
   error.value = ''
-  if (code.value.length === 6) submit()
+  if (code.value.length === 6) submit().catch(() => {})
 }
 
 async function resend() {
@@ -79,7 +79,7 @@ function onRequired() {
   open.value = true
   pulse.value = true
   setTimeout(() => { pulse.value = false }, 900)
-  nextTick(() => input.value?.focus())
+  nextTick(() => input.value?.focus()).catch(() => {})
 }
 
 onMounted(() => window.addEventListener('email-verification-required', onRequired))

@@ -69,7 +69,7 @@ async function remove() {
   try {
     await reportsApi.remove(report.value.id)
     toast.success(t('reportDetail.deleted'))
-    router.replace({ name: 'reports' })
+    router.replace({ name: 'reports' }).catch(() => {})
   } catch (e) {
     toast.error(messageOf(e))
     busy.value = false
