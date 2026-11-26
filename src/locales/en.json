@@ -50,8 +50,8 @@
     "feature2": "Alerts when something happens near you",
     "feature3": "Trusted contacts",
     "more": "Learn more",
-    "welcome": "Welcome to PeaceApp",
-    "loginSubtitle": "Sign in to continue",
+    "welcome": "Good to have you back",
+    "loginSubtitle": "Sign in to keep up with what’s happening near you.",
     "email": "Email",
     "password": "Password",
     "login": "Sign in",
@@ -74,7 +74,7 @@
     "haveAccount": "Already have an account?",
     "recoverTitle": "Recover your password",
     "recoverSubtitle": "Enter your email and we will send you the instructions.",
-    "recoverSent": "If the email is registered, you will get the instructions in a few minutes. The link lasts 30 minutes.",
+    "recoverSent": "If the email is registered, we sent you a link to reset your password. Check your inbox (and spam). It expires in 30 minutes.",
     "haveToken": "I already have the code",
     "sendLink": "Send instructions",
     "backToLogin": "Back to sign in",
@@ -82,7 +82,52 @@
     "resetSubtitle": "Paste the code you received and choose your new password.",
     "token": "Recovery code",
     "newPassword": "New password",
-    "tokenInvalid": "The code is invalid, expired or already used."
+    "tokenInvalid": "The code is invalid, expired or already used.",
+    "accessLabel": "Your community starts here",
+    "emailPlaceholder": "you{'@'}example.com",
+    "passwordPlaceholder": "Enter your password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "privateAccess": "Your account, your private space.",
+    "carousel": {
+      "label": "Discover Peace App",
+      "eyebrow": "A city we care for together",
+      "controls": "Carousel controls",
+      "report": {
+        "title": "What you see",
+        "accent": "can make a difference.",
+        "description": "Report an incident and help your community understand what’s happening in the neighborhood."
+      },
+      "map": {
+        "title": "Know your surroundings,",
+        "accent": "stay informed on the move.",
+        "description": "Explore reports on the map and receive alerts about what’s happening nearby."
+      },
+      "community": {
+        "title": "Peace of mind",
+        "accent": "is something we build together.",
+        "description": "Connect with people you trust and join a community that looks out for one another."
+      }
+    },
+    "registerLabel": "Join your community",
+    "recoverLabel": "Recover your access",
+    "strength": {
+      "label": "Password strength",
+      "idle": "Type a password",
+      "weak": "Weak",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong"
+    },
+    "rules": {
+      "length": "8 to 72 characters",
+      "lower": "A lowercase letter",
+      "upper": "An uppercase letter",
+      "number": "A number",
+      "met": "met",
+      "pending": "pending"
+    },
+    "match": "Passwords match"
   },
   "report": {
     "typeLabel": "Type",
@@ -435,5 +480,61 @@
       }
     ],
     "lastUpdate": "Last Update"
+  },
+  "verify": {
+    "title": "Verify your email",
+    "body": "We sent a 6-digit code to {email}. Enter it to post, vote and comment.",
+    "placeholder": "000000",
+    "confirm": "Verify",
+    "resend": "Resend code",
+    "resendIn": "Resend in {s} s",
+    "later": "Later",
+    "pill": "Verify email",
+    "success": "Email verified!",
+    "invalid": "The code is incorrect or expired.",
+    "tooMany": "Too many attempts. Request a new code.",
+    "sent": "We sent you a new code.",
+    "required": "Verify your email to do this.",
+    "already": "Your email is already verified.",
+    "label": "Verification code"
+  },
+  "mfa": {
+    "step": "Two-step verification",
+    "loginTitle": "Enter your code",
+    "loginHint": "Open your authenticator app and type the 6-digit PeaceApp code.",
+    "recoveryTitle": "Recovery code",
+    "recoveryHint": "Type one of the recovery codes you saved. Each one works only once.",
+    "codeLabel": "Verification code",
+    "verify": "Verify",
+    "useRecovery": "Use a recovery code",
+    "useApp": "Use my authenticator app",
+    "back": "Back",
+    "invalid": "That code is incorrect.",
+    "locked": "Too many attempts. Try again in {s} min.",
+    "expired": "The verification expired. Sign in again.",
+    "requiredForStaff": "Turn on two-step verification in your profile to use moderation features.",
+    "title": "Two-step verification",
+    "on": "On",
+    "off": "Off",
+    "offHint": "Add an extra layer: besides your password we will ask for a code from your authenticator app.",
+    "onHint": "Your account asks for a code at sign-in. Recovery codes left: {n}.",
+    "enable": "Turn on verification",
+    "activate": "Turn on",
+    "disable": "Turn off",
+    "regenerate": "New recovery codes",
+    "step1": "Install an authenticator app (Google Authenticator, Microsoft Authenticator, Authy or 1Password).",
+    "step2": "Scan this QR code with the app.",
+    "step3": "Type the 6-digit code it shows to confirm.",
+    "qrAlt": "QR code for the authenticator app",
+    "manual": "Can't scan? Type this key manually:",
+    "disableHint": "To turn it off confirm your password and a code from your app or a recovery code.",
+    "regenerateHint": "Old codes will stop working. Confirm your password and a current code.",
+    "codesHint": "Keep these codes somewhere safe. If you lose your phone they are the only way in. We will not show them again.",
+    "copy": "Copy",
+    "download": "Download",
+    "copied": "Codes copied.",
+    "saved": "I saved my recovery codes",
+    "done": "Done",
+    "disabled": "Two-step verification turned off."
   }
 }

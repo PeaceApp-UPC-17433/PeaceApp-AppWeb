@@ -5,9 +5,9 @@ import { useI18n } from 'vue-i18n'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { env } from '@/config/env.js'
-import { REPORT_TYPES, SEVERITIES, RISK_COLORS, typeMeta } from '@/config/domain.js'
+import { REPORT_TYPES, SEVERITIES, RISK_COLORS, typeMeta, severityMeta } from '@/config/domain.js'
 import { reportsApi } from '@/api/reports.api.js'
-import { currentOrFallback, locate } from '@/composables/useUserLocation.js'
+import { currentOrFallback, locate, userLocation } from '@/composables/useUserLocation.js'
 import { useToast } from '@/composables/useToast.js'
 import { useApiError } from '@/composables/useApiError.js'
 import ReportBadges from '@/components/reports/ReportBadges.vue'
@@ -53,8 +53,9 @@ function addMarker(p) {
   const el = document.createElement('button')
   el.className = 'pa-marker'
   el.setAttribute('aria-label', t(`report.type.${p.type}`))
-  el.style.backgroundImage = `url('${(typeMeta[p.type] || typeMeta.OTRO).image}')`
-  el.addEventListener('click', (ev) => { ev.stopPropagation(); select(p.id) })
+  el.style.setProperty('--pin', (severityMeta[p.severity] || severityMeta.MEDIUM).color)
+  el.innerHTML = `<span class="pin"><svg viewBox="0 0 34 44" width="34" height="44" aria-hidden="true"><path d="M17 43C17 43 3 28.5 3 16.5a14 14 0 0 1 28 0C31 28.5 17 43 17 43z" fill="currentColor" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/></svg><i class="pi ${(typeMeta[p.type] || typeMeta.OTRO).icon}"></i></span>`
+  el.addEventListener('click', (ev) => { ev.stopPropagation(); select(p.id).catch(() => {}) })
   const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' }).setLngLat([p.longitude, p.latitude]).addTo(map.value)
   markers.push(marker)
 }
@@ -88,7 +89,7 @@ async function load() {
 
 const scheduleLoad = () => {
   clearTimeout(loadTimer)
-  loadTimer = setTimeout(load, 350)
+  loadTimer = setTimeout(() => load().catch(() => {}), 350)
 }
 
 function setHeat(cells) {
@@ -155,15 +156,9 @@ async function searchPlace() {
   }
 }
 
-async function goToMe() {
-  const pos = await locate()
-  if (pos) map.value.flyTo({ center: [pos.lng, pos.lat], zoom: 15 })
-  else toast.info(t('map.locationDenied'))
-}
-
 function reportHere() {
   const c = map.value.getCenter()
-  router.push({ name: 'report-new', query: { lat: c.lat.toFixed(6), lng: c.lng.toFixed(6) } })
+  router.push({ name: 'report-new', query: { lat: c.lat.toFixed(6), lng: c.lng.toFixed(6) } }).catch(() => {})
 }
 
 watch(mode, load)
@@ -176,10 +171,28 @@ onMounted(async () => {
     container: mapEl.value,
     style: 'mapbox://styles/mapbox/streets-v12',
     center: [start.lng, start.lat],
-    zoom: 14
+    zoom: 14,
+    locale: {
+      'GeolocateControl.FindMyLocation': t('map.myLocation'),
+      'GeolocateControl.LocationNotAvailable': t('map.locationDenied')
+    }
   })
   map.value.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-right')
-  map.value.on('load', () => { setupHeatLayers(); load() })
+  const geolocate = new mapboxgl.GeolocateControl({
+    positionOptions: { enableHighAccuracy: true },
+    trackUserLocation: true,
+    showUserHeading: true,
+    showAccuracyCircle: true,
+    fitBoundsOptions: { maxZoom: 16 }
+  })
+  map.value.addControl(geolocate, 'bottom-right')
+  geolocate.on('geolocate', (e) => {
+    userLocation.lat = e.coords.latitude
+    userLocation.lng = e.coords.longitude
+    userLocation.denied = false
+  })
+  geolocate.on('error', () => { userLocation.denied = true })
+  map.value.on('load', () => { setupHeatLayers(); load().catch(() => {}); geolocate.trigger() })
   map.value.on('moveend', scheduleLoad)
   map.value.on('click', () => (selected.value = null))
 })
@@ -198,12 +211,12 @@ onBeforeUnmount(() => {
     <div class="toolbar card">
       <form class="row" style="flex-wrap: nowrap" @submit.prevent="searchPlace">
         <input v-model="search" class="input" :placeholder="$t('map.searchPlaceholder')" :aria-label="$t('map.searchPlaceholder')" />
-        <button class="btn" :disabled="searching" :aria-label="$t('common.search')"><i class="pi pi-search" /></button>
+        <button type="submit" class="btn" :disabled="searching" :aria-label="$t('common.search')"><i class="pi pi-search" /></button>
       </form>
 
       <div class="row" style="gap: 6px">
-        <button class="chip" :class="{ active: mode === 'markers' }" @click="mode = 'markers'"><i class="pi pi-map-marker" /> {{ $t('map.markers') }}</button>
-        <button class="chip" :class="{ active: mode === 'heatmap' }" @click="mode = 'heatmap'"><i class="pi pi-sun" /> {{ $t('map.heatmap') }}</button>
+        <button type="button" class="chip" :class="{ active: mode === 'markers' }" @click="mode = 'markers'"><i class="pi pi-map-marker" /> {{ $t('map.markers') }}</button>
+        <button type="button" class="chip" :class="{ active: mode === 'heatmap' }" @click="mode = 'heatmap'"><i class="pi pi-sun" /> {{ $t('map.heatmap') }}</button>
       </div>
 
       <div v-if="mode === 'markers'" class="row">
@@ -227,12 +240,11 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="actions">
-      <button class="btn btn-secondary" :title="$t('map.myLocation')" @click="goToMe"><i class="pi pi-compass" /></button>
-      <button class="btn" @click="reportHere"><i class="pi pi-plus" /> {{ $t('map.reportHere') }}</button>
+      <button type="button" class="btn" @click="reportHere"><i class="pi pi-plus" /> {{ $t('map.reportHere') }}</button>
     </div>
 
     <aside v-if="selected" class="detail card" aria-live="polite">
-      <button class="icon-btn close" :aria-label="$t('common.close')" @click="selected = null"><i class="pi pi-times" /></button>
+      <button type="button" class="icon-btn close" :aria-label="$t('common.close')" @click="selected = null"><i class="pi pi-times" /></button>
       <div v-if="selectedLoading || !selected.title" class="loading"><span class="spinner" /></div>
       <template v-else>
         <img v-if="selected.image" :src="selected.image" :alt="selected.title" class="photo" />
@@ -247,8 +259,13 @@ onBeforeUnmount(() => {
 </template>
 
 <style>
-.pa-marker { width: 42px; height: 42px; border: none; padding: 0; background: transparent center / contain no-repeat; cursor: pointer; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35)); transition: transform 0.15s; }
-.pa-marker:hover { transform: scale(1.15); }
+.pa-marker { width: 34px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer; }
+.pa-marker .pin { position: relative; display: block; width: 34px; height: 44px; color: var(--pin, #e0a100); filter: drop-shadow(0 3px 3px rgba(10, 40, 60, 0.32)); transform-origin: 50% 100%; animation: pin-drop var(--dur-base, 250ms) var(--ease-pop, ease-out) both; transition: transform var(--dur-fast, 150ms) var(--ease, ease-out); }
+.pa-marker:hover .pin, .pa-marker:focus-visible .pin { transform: translateY(-3px) scale(1.08); }
+.pa-marker:focus-visible { outline: none; }
+.pa-marker .pin i { position: absolute; top: 9px; left: 0; width: 100%; text-align: center; font-size: 14px; line-height: 16px; color: #fff; }
+@keyframes pin-drop { from { opacity: 0; transform: translateY(-10px) scale(0.8); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .pa-marker .pin { animation: none; } }
 </style>
 
 <style scoped>

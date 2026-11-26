@@ -39,7 +39,7 @@ async function push() {
 // El backend solo alerta a quien tiene una ubicación de menos de 24 h: se reenvía periódicamente.
 export function startLocationSync() {
     stopLocationSync()
-    push()
+    push().catch(() => {})
     timer = setInterval(push, env.locationPushMs)
 }
 

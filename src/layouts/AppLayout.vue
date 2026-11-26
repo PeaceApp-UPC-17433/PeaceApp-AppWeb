@@ -1,4 +1,5 @@
 <script setup>
+import EmailVerificationPrompt from '@/components/auth/EmailVerificationPrompt.vue'
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { session } from '@/stores/session.js'
@@ -22,7 +23,7 @@ const links = computed(() => [
 
 function logout() {
   session.logout()
-  router.replace({ name: 'login' })
+  router.replace({ name: 'login' }).catch(() => {})
 }
 
 const onDocClick = () => (menuOpen.value = false)
@@ -55,7 +56,7 @@ onBeforeUnmount(() => {
       <div class="right">
         <LanguageSwitch />
         <div class="user" @click.stop>
-          <button class="avatar-btn" :aria-label="$t('nav.account')" @click="menuOpen = !menuOpen">
+          <button type="button" class="avatar-btn" :aria-label="$t('nav.account')" @click="menuOpen = !menuOpen">
             <img v-if="session.state.profile?.profile_image" :src="session.state.profile.profile_image" alt="" />
             <i v-else class="pi pi-user" />
           </button>
@@ -71,6 +72,7 @@ onBeforeUnmount(() => {
       </div>
     </header>
 
+    <EmailVerificationPrompt v-if="session.state.profile" />
     <main class="content"><RouterView :key="$route.fullPath" /></main>
     <LegalDialog :model-value="!!legal" :kind="legal || 'faq'" @update:model-value="legal = null" />
   </div>

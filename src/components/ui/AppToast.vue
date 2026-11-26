@@ -10,7 +10,7 @@ const icons = { success: 'pi-check-circle', error: 'pi-times-circle', info: 'pi-
       <div v-for="t in toasts" :key="t.id" class="toast" :class="t.type" role="status">
         <i class="pi" :class="icons[t.type]" />
         <span>{{ t.message }}</span>
-        <button class="icon-btn" :aria-label="$t('common.close')" @click="dismiss(t.id)"><i class="pi pi-times" /></button>
+        <button type="button" class="icon-btn" :aria-label="$t('common.close')" @click="dismiss(t.id)"><i class="pi pi-times" /></button>
       </div>
     </TransitionGroup>
   </div>

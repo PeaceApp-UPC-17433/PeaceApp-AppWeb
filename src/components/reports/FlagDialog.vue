@@ -53,8 +53,8 @@ async function submit() {
       </div>
     </form>
     <template #footer>
-      <button class="btn btn-secondary" @click="emit('update:modelValue', false)">{{ $t('common.cancel') }}</button>
-      <button class="btn btn-danger" :disabled="busy" @click="submit">{{ $t('flag.submit') }}</button>
+      <button type="button" class="btn btn-secondary" @click="emit('update:modelValue', false)">{{ $t('common.cancel') }}</button>
+      <button type="button" class="btn btn-danger" :disabled="busy" @click="submit">{{ $t('flag.submit') }}</button>
     </template>
   </AppDialog>
 </template>

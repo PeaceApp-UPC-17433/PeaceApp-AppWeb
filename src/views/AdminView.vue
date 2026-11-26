@@ -81,7 +81,7 @@ onMounted(loadMetrics)
     </div>
 
     <div class="tabs" role="tablist">
-      <button v-for="k in ['metrics', 'flags', 'queue', 'log']" :key="k" class="tab" :class="{ active: tab === k }" role="tab" @click="switchTab(k)">{{ $t(`admin.tab.${k}`) }}</button>
+      <button type="button" v-for="k in ['metrics', 'flags', 'queue', 'log']" :key="k" class="tab" :class="{ active: tab === k }" role="tab" @click="switchTab(k)">{{ $t(`admin.tab.${k}`) }}</button>
     </div>
 
     <!-- Métricas -->
@@ -121,7 +121,7 @@ onMounted(loadMetrics)
     <!-- Denuncias -->
     <template v-else-if="tab === 'flags'">
       <div class="row">
-        <button v-for="s in FLAG_STATUSES" :key="s" class="chip" :class="{ active: flagStatus === s }" @click="flagStatus = s">{{ $t(`admin.flagStatus.${s}`) }}</button>
+        <button type="button" v-for="s in FLAG_STATUSES" :key="s" class="chip" :class="{ active: flagStatus === s }" @click="flagStatus = s">{{ $t(`admin.flagStatus.${s}`) }}</button>
       </div>
       <LoadingBlock v-if="loading" />
       <EmptyState v-else-if="!flags.content.length" icon="pi-shield" :text="$t('admin.noFlags')" />
@@ -137,7 +137,7 @@ onMounted(loadMetrics)
               <td>{{ $t(`flag.reasons.${f.reason}`) }}</td>
               <td>{{ f.details || '—' }}<p v-if="f.resolutionNote" class="muted small">↳ {{ f.resolutionNote }}</p></td>
               <td class="small">{{ dateTime(f.createdAt) }}</td>
-              <td><button v-if="f.status === 'OPEN'" class="btn btn-sm" @click="openResolve(f)">{{ $t('admin.resolve') }}</button><span v-else class="badge badge-soft">{{ $t(`admin.flagStatus.${f.status}`) }}</span></td>
+              <td><button type="button" v-if="f.status === 'OPEN'" class="btn btn-sm" @click="openResolve(f)">{{ $t('admin.resolve') }}</button><span v-else class="badge badge-soft">{{ $t(`admin.flagStatus.${f.status}`) }}</span></td>
             </tr>
           </tbody>
         </table>
@@ -148,7 +148,7 @@ onMounted(loadMetrics)
     <!-- Cola de reportes -->
     <template v-else-if="tab === 'queue'">
       <div class="row">
-        <button v-for="s in ['PENDIENTE_VALIDACION', 'EN_MODERACION', 'VALIDADO']" :key="s" class="chip" :class="{ active: queueStatus === s }" @click="queueStatus = s">{{ $t(`report.status.${s}`) }}</button>
+        <button type="button" v-for="s in ['PENDIENTE_VALIDACION', 'EN_MODERACION', 'VALIDADO']" :key="s" class="chip" :class="{ active: queueStatus === s }" @click="queueStatus = s">{{ $t(`report.status.${s}`) }}</button>
       </div>
       <p class="muted small">{{ $t('admin.queueHint') }}</p>
       <LoadingBlock v-if="loading" />
@@ -193,8 +193,8 @@ onMounted(loadMetrics)
         </div>
       </div>
       <template #footer>
-        <button class="btn btn-secondary" @click="resolving = null">{{ $t('common.cancel') }}</button>
-        <button class="btn" :disabled="busy" @click="resolve">{{ $t('admin.resolve') }}</button>
+        <button type="button" class="btn btn-secondary" @click="resolving = null">{{ $t('common.cancel') }}</button>
+        <button type="button" class="btn" :disabled="busy" @click="resolve">{{ $t('admin.resolve') }}</button>
       </template>
     </AppDialog>
   </div>

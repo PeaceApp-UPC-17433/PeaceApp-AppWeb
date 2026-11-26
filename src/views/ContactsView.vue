@@ -87,11 +87,11 @@ onMounted(load)
 
     <form class="card row" style="flex-wrap: nowrap" @submit.prevent="sendRequest">
       <input v-model="email" class="input" type="email" required :placeholder="$t('contacts.emailPlaceholder')" :aria-label="$t('contacts.emailPlaceholder')" />
-      <button class="btn" :disabled="sending"><i class="pi pi-user-plus" /> {{ $t('contacts.add') }}</button>
+      <button type="submit" class="btn" :disabled="sending"><i class="pi pi-user-plus" /> {{ $t('contacts.add') }}</button>
     </form>
 
     <div class="tabs" role="tablist">
-      <button v-for="tb in tabs" :key="tb.key" class="tab" :class="{ active: tab === tb.key }" role="tab" @click="tab = tb.key">
+      <button type="button" v-for="tb in tabs" :key="tb.key" class="tab" :class="{ active: tab === tb.key }" role="tab" @click="tab = tb.key">
         {{ $t(`contacts.tab.${tb.key}`) }} <span v-if="tb.count" class="counter" :style="tb.key !== 'incoming' && { background: 'var(--brand-600)' }">{{ tb.count }}</span>
       </button>
     </div>
@@ -107,16 +107,16 @@ onMounted(load)
         </div>
 
         <template v-if="tab === 'incoming'">
-          <button class="btn btn-sm" @click="accept(c)"><i class="pi pi-check" /> {{ $t('contacts.accept') }}</button>
-          <button class="btn btn-secondary btn-sm" @click="decline(c)">{{ $t('contacts.decline') }}</button>
-          <button class="icon-btn" :title="$t('contacts.block')" @click="pending = { action: 'block', contact: c }"><i class="pi pi-ban" /></button>
+          <button type="button" class="btn btn-sm" @click="accept(c)"><i class="pi pi-check" /> {{ $t('contacts.accept') }}</button>
+          <button type="button" class="btn btn-secondary btn-sm" @click="decline(c)">{{ $t('contacts.decline') }}</button>
+          <button type="button" class="icon-btn" :title="$t('contacts.block')" @click="pending = { action: 'block', contact: c }"><i class="pi pi-ban" /></button>
         </template>
         <template v-else-if="tab === 'accepted'">
-          <button class="icon-btn" :title="$t('contacts.block')" @click="pending = { action: 'block', contact: c }"><i class="pi pi-ban" /></button>
-          <button class="icon-btn" :title="$t('common.delete')" @click="pending = { action: 'remove', contact: c }"><i class="pi pi-trash" /></button>
+          <button type="button" class="icon-btn" :title="$t('contacts.block')" @click="pending = { action: 'block', contact: c }"><i class="pi pi-ban" /></button>
+          <button type="button" class="icon-btn" :title="$t('common.delete')" @click="pending = { action: 'remove', contact: c }"><i class="pi pi-trash" /></button>
         </template>
-        <button v-else-if="tab === 'outgoing'" class="btn btn-secondary btn-sm" @click="run(contactsApi.remove, c, 'contacts.cancelled')">{{ $t('contacts.cancel') }}</button>
-        <button v-else class="btn btn-secondary btn-sm" @click="run(contactsApi.remove, c, 'contacts.unblocked')">{{ $t('contacts.unblock') }}</button>
+        <button type="button" v-else-if="tab === 'outgoing'" class="btn btn-secondary btn-sm" @click="run(contactsApi.remove, c, 'contacts.cancelled')">{{ $t('contacts.cancel') }}</button>
+        <button type="button" v-else class="btn btn-secondary btn-sm" @click="run(contactsApi.remove, c, 'contacts.unblocked')">{{ $t('contacts.unblock') }}</button>
       </li>
     </ul>
 

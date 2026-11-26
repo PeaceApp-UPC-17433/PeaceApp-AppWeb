@@ -3,48 +3,18 @@ name: CI
 on:
   push:
     branches: [main, develop]
+    tags: ["v*"]
   pull_request:
     branches: [main, develop]
-  workflow_dispatch:
 
 permissions:
   contents: read
-
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  packages: write
+  id-token: write
 
 jobs:
-  verify:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - run: corepack enable
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm test
-      - run: pnpm build
-
-  publish:
-    needs: verify
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v4
-      - name: Sign in to GHCR
-        env:
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
-      - name: Build and push image
-        run: |
-          image="ghcr.io/${GITHUB_REPOSITORY,,}"
-          docker build --label "org.opencontainers.image.source=https://github.com/$GITHUB_REPOSITORY" --label "org.opencontainers.image.revision=$GITHUB_SHA" -t "$image:$GITHUB_SHA" -t "$image:$GITHUB_REF_NAME" .
-          docker push "$image:$GITHUB_SHA"
-          docker push "$image:$GITHUB_REF_NAME"
+  pipeline:
+    uses: PeaceApp-UPC-17433/pipelines/.github/workflows/service.yml@v1
+    secrets: inherit
+    with:
+      runtime: node

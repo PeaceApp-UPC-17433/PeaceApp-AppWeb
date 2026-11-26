@@ -1,11 +1,16 @@
 <script setup>
 import { reactive, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { session } from '@/stores/session.js'
 import { useApiError } from '@/composables/useApiError.js'
 import LegalDialog from '@/components/ui/LegalDialog.vue'
+import PasswordInput from '@/components/ui/PasswordInput.vue'
+import PasswordRules from '@/components/auth/PasswordRules.vue'
+import { isStrongPassword } from '@/config/password.js'
 
 const router = useRouter()
+const { locale } = useI18n()
 const { messageOf, fieldErrors } = useApiError()
 
 const form = reactive({ name: '', lastname: '', email: '', phonenumber: '', password: '' })
@@ -17,17 +22,19 @@ const errors = ref({})
 const showTerms = ref(false)
 
 const mismatch = computed(() => confirm.value && confirm.value !== form.password)
+const matches = computed(() => !!confirm.value && confirm.value === form.password)
+const canSubmit = computed(() => accepted.value && isStrongPassword(form.password) && matches.value)
 
 async function submit() {
   error.value = ''
   errors.value = {}
-  if (mismatch.value) return
+  if (!canSubmit.value) return
   busy.value = true
   try {
     // Se envían solo los campos que el backend acepta; el teléfono es opcional.
-    const payload = { ...form, email: form.email.trim().toLowerCase(), phonenumber: form.phonenumber.trim() || undefined }
+    const payload = { ...form, locale: locale.value, email: form.email.trim().toLowerCase(), phonenumber: form.phonenumber.trim() || undefined }
     await session.register(payload)
-    router.replace('/map')
+    router.replace('/map').catch(() => {})
   } catch (e) {
     errors.value = fieldErrors(e)
     error.value = messageOf(e)
@@ -39,7 +46,8 @@ async function submit() {
 
 <template>
   <div class="card stack">
-    <div>
+    <div class="auth-heading">
+      <p class="eyebrow">{{ $t('auth.registerLabel') }}</p>
       <h1>{{ $t('auth.createAccount') }}</h1>
       <p class="muted">{{ $t('auth.registerSubtitle') }}</p>
     </div>
@@ -58,7 +66,7 @@ async function submit() {
         </div>
         <div class="field">
           <label for="reg-email">{{ $t('auth.email') }}</label>
-          <input id="reg-email" v-model="form.email" class="input" :class="{ invalid: errors.email }" type="email" maxlength="50" required autocomplete="email" />
+          <input id="reg-email" v-model="form.email" class="input" :class="{ invalid: errors.email }" type="email" maxlength="50" required autocomplete="email" :placeholder="$t('auth.emailPlaceholder')" />
           <span v-if="errors.email" class="field-error">{{ errors.email }}</span>
         </div>
         <div class="field">
@@ -68,15 +76,18 @@ async function submit() {
         </div>
         <div class="field">
           <label for="reg-pass">{{ $t('auth.password') }}</label>
-          <input id="reg-pass" v-model="form.password" class="input" :class="{ invalid: errors.password }" type="password" minlength="8" maxlength="72" required autocomplete="new-password" />
+          <PasswordInput id="reg-pass" v-model="form.password" :invalid="!!errors.password" autocomplete="new-password" required />
           <span v-if="errors.password" class="field-error">{{ errors.password }}</span>
-          <span v-else class="hint">{{ $t('auth.passwordHint') }}</span>
         </div>
         <div class="field">
           <label for="reg-confirm">{{ $t('auth.confirmPassword') }}</label>
-          <input id="reg-confirm" v-model="confirm" class="input" :class="{ invalid: mismatch }" type="password" required autocomplete="new-password" />
-          <span v-if="mismatch" class="field-error">{{ $t('auth.mismatch') }}</span>
+          <PasswordInput id="reg-confirm" v-model="confirm" :invalid="!!mismatch" autocomplete="new-password" required />
+          <Transition name="note" mode="out-in">
+            <span v-if="mismatch" key="no" class="field-error">{{ $t('auth.mismatch') }}</span>
+            <span v-else-if="matches" key="yes" class="field-ok"><i class="pi pi-check" aria-hidden="true" /> {{ $t('auth.match') }}</span>
+          </Transition>
         </div>
+        <div class="full"><PasswordRules :value="form.password" /></div>
       </div>
 
       <label class="checkbox">
@@ -85,10 +96,20 @@ async function submit() {
       </label>
 
       <p v-if="error && !Object.keys(errors).length" class="alert-box error" role="alert">{{ error }}</p>
-      <button class="btn btn-block" :disabled="busy || !accepted">{{ busy ? $t('common.loading') : $t('auth.signUpAction') }}</button>
+      <button type="submit" class="btn btn-block" :disabled="busy || !canSubmit">{{ busy ? $t('common.loading') : $t('auth.signUpAction') }}</button>
     </form>
 
-    <span class="small muted">{{ $t('auth.haveAccount') }} <RouterLink to="/login">{{ $t('auth.login') }}</RouterLink></span>
+    <div class="alt-link">
+      <span class="muted">{{ $t('auth.haveAccount') }} <RouterLink to="/login">{{ $t('auth.login') }}</RouterLink></span>
+    </div>
     <LegalDialog v-model="showTerms" kind="terms" />
   </div>
 </template>
+
+<style scoped>
+.full { grid-column: 1 / -1; }
+.field-ok { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #1b6b47; }
+.field-ok i { font-size: 10px; }
+.note-enter-active, .note-leave-active { transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+.note-enter-from, .note-leave-to { opacity: 0; transform: translateY(-4px); }
+</style>

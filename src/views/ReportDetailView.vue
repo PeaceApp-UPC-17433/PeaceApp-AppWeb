@@ -69,7 +69,7 @@ async function remove() {
   try {
     await reportsApi.remove(report.value.id)
     toast.success(t('reportDetail.deleted'))
-    router.replace({ name: 'reports' })
+    router.replace({ name: 'reports' }).catch(() => {})
   } catch (e) {
     toast.error(messageOf(e))
     busy.value = false
@@ -108,8 +108,8 @@ onMounted(load)
 
         <div class="row">
           <RouterLink v-if="canEdit" :to="{ name: 'report-edit', params: { id: report.id } }" class="btn btn-secondary"><i class="pi pi-pencil" /> {{ $t('common.edit') }}</RouterLink>
-          <button v-if="canEdit" class="btn btn-secondary" @click="deleteOpen = true"><i class="pi pi-trash" /> {{ $t('common.delete') }}</button>
-          <button v-if="!isOwner" class="btn btn-ghost" @click="flagOpen = true"><i class="pi pi-flag" /> {{ $t('flag.title') }}</button>
+          <button type="button" v-if="canEdit" class="btn btn-secondary" @click="deleteOpen = true"><i class="pi pi-trash" /> {{ $t('common.delete') }}</button>
+          <button type="button" v-if="!isOwner" class="btn btn-ghost" @click="flagOpen = true"><i class="pi pi-flag" /> {{ $t('flag.title') }}</button>
         </div>
       </article>
 
@@ -120,7 +120,7 @@ onMounted(load)
             <option value="" disabled>{{ $t('reportDetail.changeStatus') }}</option>
             <option v-for="s in nextStatuses" :key="s" :value="s">{{ $t(`report.status.${s}`) }}</option>
           </select>
-          <button class="btn" :disabled="!newStatus || busy" @click="changeStatus">{{ $t('common.apply') }}</button>
+          <button type="button" class="btn" :disabled="!newStatus || busy" @click="changeStatus">{{ $t('common.apply') }}</button>
         </div>
       </section>
 

@@ -17,7 +17,7 @@ export const badges = {
     refresh,
     start() {
         this.stop()
-        refresh()
+        refresh().catch(() => {})
         timer = setInterval(refresh, env.badgePollMs)
     },
     stop() {

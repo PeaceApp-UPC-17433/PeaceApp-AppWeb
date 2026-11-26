@@ -7,6 +7,11 @@ export function useApiError() {
     function messageOf(err) {
         if (!err) return t('errors.generic')
         if (err.status === 0) return t('errors.network')
+        if (err.code === 'EMAIL_NOT_VERIFIED') return t('verify.required')
+        if (err.code === 'INVALID_MFA_CODE') return t('mfa.invalid')
+        if (err.code === 'MFA_LOCKED') return t('mfa.locked', { s: Math.ceil((err.retryAfterSeconds || 60) / 60) })
+        if (err.code === 'MFA_CHALLENGE_EXPIRED') return t('mfa.expired')
+        if (err.code === 'MFA_REQUIRED') return t('mfa.requiredForStaff')
         if (err.errors && Object.keys(err.errors).length) return Object.values(err.errors).join('. ')
         if (err.status === 403) return t('errors.forbidden')
         if (err.status === 404) return t('errors.notFound')

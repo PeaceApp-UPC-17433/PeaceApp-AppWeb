@@ -27,7 +27,7 @@ onBeforeUnmount(() => {
         <div class="dialog" role="dialog" aria-modal="true" :style="{ maxWidth: width }">
           <header class="dialog-head">
             <h2>{{ title }}</h2>
-            <button class="icon-btn" :aria-label="$t('common.close')" @click="close"><i class="pi pi-times" /></button>
+            <button type="button" class="icon-btn" :aria-label="$t('common.close')" @click="close"><i class="pi pi-times" /></button>
           </header>
           <div class="dialog-body"><slot /></div>
           <footer v-if="$slots.footer" class="dialog-foot"><slot name="footer" /></footer>

@@ -39,10 +39,10 @@ defineExpose({ reload: load })
   <section v-if="summary" class="card">
     <h3 class="card-title">{{ $t('votes.title') }}</h3>
     <div class="row">
-      <button class="btn" :class="summary.myVote === 'CONFIRM' ? '' : 'btn-secondary'" :disabled="busy || !canVote" @click="vote('CONFIRM')">
+      <button type="button" class="btn" :class="summary.myVote === 'CONFIRM' ? '' : 'btn-secondary'" :disabled="busy || !canVote" @click="vote('CONFIRM')">
         <i class="pi pi-check" /> {{ $t('votes.confirm') }} ({{ summary.confirmations }})
       </button>
-      <button class="btn" :class="summary.myVote === 'DISPUTE' ? 'btn-danger' : 'btn-secondary'" :disabled="busy || !canVote" @click="vote('DISPUTE')">
+      <button type="button" class="btn" :class="summary.myVote === 'DISPUTE' ? 'btn-danger' : 'btn-secondary'" :disabled="busy || !canVote" @click="vote('DISPUTE')">
         <i class="pi pi-times" /> {{ $t('votes.dispute') }} ({{ summary.disputes }})
       </button>
     </div>

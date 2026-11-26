@@ -13,7 +13,7 @@ function change(code) {
 
 <template>
   <div class="lang" role="group" :aria-label="$t('common.language')">
-    <button v-for="o in options" :key="o.code" :class="{ on: locale === o.code }" @click="change(o.code)">{{ o.label }}</button>
+    <button type="button" v-for="o in options" :key="o.code" :class="{ on: locale === o.code }" @click="change(o.code)">{{ o.label }}</button>
   </div>
 </template>
 

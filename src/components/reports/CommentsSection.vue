@@ -69,8 +69,8 @@ onMounted(() => load())
     <h3 class="card-title">{{ $t('comments.title') }} ({{ data.totalElements }})</h3>
 
     <form class="row" style="align-items: flex-start" @submit.prevent="send">
-      <textarea v-model="text" class="textarea grow" rows="2" maxlength="500" :placeholder="$t('comments.placeholder')" />
-      <button class="btn" :disabled="sending || !text.trim()"><i class="pi pi-send" /> {{ $t('comments.send') }}</button>
+      <textarea v-model="text" :aria-label="$t('comments.placeholder')" class="textarea grow" rows="2" maxlength="500" :placeholder="$t('comments.placeholder')" />
+      <button type="submit" class="btn" :disabled="sending || !text.trim()"><i class="pi pi-send" /> {{ $t('comments.send') }}</button>
     </form>
 
     <div v-if="loading" class="loading"><span class="spinner" /></div>
@@ -84,8 +84,8 @@ onMounted(() => load())
             · {{ relative(c.createdAt) }}
           </span>
           <span>
-            <button v-if="canFlag(c)" class="icon-btn" :title="$t('flag.title')" @click="flag(c)"><i class="pi pi-flag" /></button>
-            <button v-if="canDelete(c)" class="icon-btn" :title="$t('common.delete')" @click="remove(c)"><i class="pi pi-trash" /></button>
+            <button type="button" v-if="canFlag(c)" class="icon-btn" :title="$t('flag.title')" @click="flag(c)"><i class="pi pi-flag" /></button>
+            <button type="button" v-if="canDelete(c)" class="icon-btn" :title="$t('common.delete')" @click="remove(c)"><i class="pi pi-trash" /></button>
           </span>
         </div>
         <p>{{ c.text }}</p>
