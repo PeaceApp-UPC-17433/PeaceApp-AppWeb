@@ -1,0 +1,7 @@
+# Hallazgos historicos revisados (fingerprint). Ver el motivo en cada linea.
+# .env -> token publico de Mapbox (pk.)
+d207dd135892bfea59fb7c3670fbfec02e939800:.env:generic-api-key:1
+# src/views/mapgovernment.view.vue -> clave de navegador de Google Maps de un commit antiguo; revocar o restringir en Google Cloud
+e5cacd6ea838a0b2d35017dfeb6d648cf925f7e9:src/views/mapgovernment.view.vue:gcp-api-key:31
+# src/views/mapcitizen.view.vue -> clave de navegador de Google Maps de un commit antiguo; revocar o restringir en Google Cloud
+e5cacd6ea838a0b2d35017dfeb6d648cf925f7e9:src/views/mapcitizen.view.vue:gcp-api-key:73
