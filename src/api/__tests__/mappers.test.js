@@ -76,3 +76,8 @@ test('toMetrics combines incident stats and community metrics', () => {
     assert.equal(metrics.flags.open, 2)
     assert.equal(metrics.flags.actionRate, 0.75)
 })
+
+test('fromReportForm sends the stored evidence size when known', () => {
+    const body = fromReportForm({ type: 'ROBO', title: 't', latitude: 1, longitude: 2, image: 'https://s/a.jpg', imageSize: 2048 })
+    assert.equal(body.evidences[0].sizeBytes, 2048)
+})

@@ -7,7 +7,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { env } from '@/config/env.js'
 import { REPORT_TYPES, SEVERITIES } from '@/config/domain.js'
 import { reportsApi } from '@/api/reports.api.js'
-import { uploadImage } from '@/api/cloudinary.api.js'
+import { uploadEvidence } from '@/api/evidence.api.js'
 import { session } from '@/stores/session.js'
 import { currentOrFallback, locate } from '@/composables/useUserLocation.js'
 import { useToast } from '@/composables/useToast.js'
@@ -32,7 +32,7 @@ const map = shallowRef(null)
 let geoSeq = 0
 
 const form = reactive({
-  title: '', detail: '', type: '', occurredAt: '', address: '', image: '', latitude: null, longitude: null
+  title: '', detail: '', type: '', occurredAt: '', address: '', image: '', imageSize: null, latitude: null, longitude: null
 })
 
 // <input type="datetime-local"> trabaja en hora local, el backend en ISO-8601.
@@ -72,12 +72,25 @@ function initMap(lng, lat) {
   })
 }
 
+const preview = ref('')
+
+function clearImage() {
+  if (preview.value) URL.revokeObjectURL(preview.value)
+  preview.value = ''
+  form.image = ''
+  form.imageSize = null
+}
+
 async function onFile(e) {
   const file = e.target.files?.[0]
   if (!file) return
   uploading.value = true
   try {
-    form.image = await uploadImage(file)
+    const stored = await uploadEvidence(file)
+    clearImage()
+    form.image = stored.url
+    form.imageSize = stored.sizeBytes
+    preview.value = URL.createObjectURL(file)
   } catch {
     toast.error(t('reportForm.uploadFailed'))
   } finally {
@@ -98,7 +111,8 @@ async function submit() {
     latitude: form.latitude,
     longitude: form.longitude,
     address: form.address.trim(),
-    image: form.image || undefined
+    image: form.image || undefined,
+    imageSize: form.imageSize ?? undefined
   }
   try {
     const saved = editing.value ? await reportsApi.update(props.id, payload) : await reportsApi.create(payload)
@@ -140,7 +154,10 @@ onMounted(async () => {
   if (!editing.value) setPosition(center.lng, center.lat)
 })
 
-onBeforeUnmount(() => map.value?.remove())
+onBeforeUnmount(() => {
+  map.value?.remove()
+  if (preview.value) URL.revokeObjectURL(preview.value)
+})
 </script>
 
 <template>
@@ -191,9 +208,9 @@ onBeforeUnmount(() => map.value?.remove())
                 <i class="pi" :class="uploading ? 'pi-spin pi-spinner' : 'pi-upload'" /> {{ $t('reportForm.upload') }}
                 <input type="file" accept="image/*" hidden :disabled="uploading" @change="onFile" />
               </label>
-              <button v-if="form.image" type="button" class="btn btn-ghost" @click="form.image = ''"><i class="pi pi-times" /> {{ $t('common.remove') }}</button>
+              <button v-if="form.image" type="button" class="btn btn-ghost" @click="clearImage"><i class="pi pi-times" /> {{ $t('common.remove') }}</button>
             </div>
-            <img v-if="form.image" :src="form.image" alt="" class="preview" />
+            <img v-if="form.image" :src="preview || form.image" alt="" class="preview" />
           </div>
         </div>
       </div>

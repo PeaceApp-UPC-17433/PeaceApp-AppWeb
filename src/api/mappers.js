@@ -25,7 +25,7 @@ export const fromReportForm = (form) => ({
     occurredAt: form.occurredAt,
     latitude: form.latitude,
     longitude: form.longitude,
-    ...(form.image ? { evidences: [{ mediaType: 'FOTO', url: form.image, sizeBytes: UNKNOWN_SIZE_BYTES }] } : {})
+    ...(form.image ? { evidences: [{ mediaType: 'FOTO', url: form.image, sizeBytes: form.imageSize ?? UNKNOWN_SIZE_BYTES }] } : {})
 })
 
 export const toPage = (page, mapItem = (x) => x) => ({
