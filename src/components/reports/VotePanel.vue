@@ -37,16 +37,16 @@ defineExpose({ reload: load })
 
 <template>
   <section v-if="summary" class="card">
-    <h3 class="card-title">{{ $t('votes.title') }}</h3>
+    <h2 class="card-title h3">{{ $t('votes.title') }}</h2>
     <div class="row">
-      <button type="button" class="btn" :class="summary.myVote === 'CONFIRM' ? '' : 'btn-secondary'" :disabled="busy || !canVote" @click="vote('CONFIRM')">
-        <i class="pi pi-check" /> {{ $t('votes.confirm') }} ({{ summary.confirmations }})
+      <button type="button" class="btn" :class="summary.myVote === 'CONFIRM' ? '' : 'btn-secondary'" :aria-pressed="summary.myVote === 'CONFIRM'" :disabled="busy || !canVote" @click="vote('CONFIRM')">
+        <i aria-hidden="true" class="pi pi-check" /> {{ $t('votes.confirm') }} ({{ summary.confirmations }})
       </button>
-      <button type="button" class="btn" :class="summary.myVote === 'DISPUTE' ? 'btn-danger' : 'btn-secondary'" :disabled="busy || !canVote" @click="vote('DISPUTE')">
-        <i class="pi pi-times" /> {{ $t('votes.dispute') }} ({{ summary.disputes }})
+      <button type="button" class="btn" :class="summary.myVote === 'DISPUTE' ? 'btn-danger' : 'btn-secondary'" :aria-pressed="summary.myVote === 'DISPUTE'" :disabled="busy || !canVote" @click="vote('DISPUTE')">
+        <i aria-hidden="true" class="pi pi-times" /> {{ $t('votes.dispute') }} ({{ summary.disputes }})
       </button>
     </div>
-    <div class="meter" role="progressbar" :aria-valuenow="Math.max(summary.net, 0)" :aria-valuemax="summary.verificationThreshold">
+    <div class="meter" role="progressbar" :aria-label="$t('votes.meter')" aria-valuemin="0" :aria-valuenow="Math.max(summary.net, 0)" :aria-valuemax="summary.verificationThreshold">
       <span :style="{ width: Math.min(100, Math.max(0, summary.net) / summary.verificationThreshold * 100) + '%' }" />
     </div>
     <p class="muted small">{{ $t('votes.progress', { net: summary.net, threshold: summary.verificationThreshold }) }}</p>

@@ -25,6 +25,7 @@ const search = ref('')
 const searching = ref(false)
 const loading = ref(false)
 const count = ref(0)
+const mapUnavailable = ref(false)
 const selected = ref(null)
 const selectedLoading = ref(false)
 let markers = []
@@ -54,9 +55,11 @@ function addMarker(p) {
   el.className = 'pa-marker'
   el.setAttribute('aria-label', t(`report.type.${p.type}`))
   el.style.setProperty('--pin', (severityMeta[p.severity] || severityMeta.MEDIUM).color)
-  el.innerHTML = `<span class="pin"><svg viewBox="0 0 34 44" width="34" height="44" aria-hidden="true"><path d="M17 43C17 43 3 28.5 3 16.5a14 14 0 0 1 28 0C31 28.5 17 43 17 43z" fill="currentColor" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/></svg><i class="pi ${(typeMeta[p.type] || typeMeta.OTRO).icon}"></i></span>`
+  el.innerHTML = `<span class="pin"><svg viewBox="0 0 34 44" width="34" height="44" aria-hidden="true"><path d="M17 43C17 43 3 28.5 3 16.5a14 14 0 0 1 28 0C31 28.5 17 43 17 43z" fill="currentColor" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/></svg><i aria-hidden="true" class="pi ${(typeMeta[p.type] || typeMeta.OTRO).icon}"></i></span>`
   el.addEventListener('click', (ev) => { ev.stopPropagation(); select(p.id).catch(() => {}) })
   const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' }).setLngLat([p.longitude, p.latitude]).addTo(map.value)
+  // mapbox-gl pone role="img" al elemento; es un <button> y debe anunciarse como tal.
+  el.removeAttribute('role')
   markers.push(marker)
 }
 
@@ -167,7 +170,16 @@ watch(filters, load)
 onMounted(async () => {
   mapboxgl.accessToken = env.mapboxToken
   const start = (await locate()) || currentOrFallback()
-  map.value = new mapboxgl.Map({
+  try {
+    map.value = createMap(start)
+  } catch {
+    // Sin WebGL (drivers bloqueados, escritorio remoto, políticas) mapbox-gl no puede crear el mapa.
+    mapUnavailable.value = true
+  }
+})
+
+function createMap(start) {
+  const created = new mapboxgl.Map({
     container: mapEl.value,
     style: 'mapbox://styles/mapbox/streets-v12',
     center: [start.lng, start.lat],
@@ -177,6 +189,7 @@ onMounted(async () => {
       'GeolocateControl.LocationNotAvailable': t('map.locationDenied')
     }
   })
+  map.value = created
   map.value.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-right')
   const geolocate = new mapboxgl.GeolocateControl({
     positionOptions: { enableHighAccuracy: true },
@@ -195,7 +208,8 @@ onMounted(async () => {
   map.value.on('load', () => { setupHeatLayers(); load().catch(() => {}); geolocate.trigger() })
   map.value.on('moveend', scheduleLoad)
   map.value.on('click', () => (selected.value = null))
-})
+  return created
+}
 
 onBeforeUnmount(() => {
   clearTimeout(loadTimer)
@@ -207,16 +221,19 @@ onBeforeUnmount(() => {
 <template>
   <div class="map-page">
     <div ref="mapEl" class="map" />
+    <p v-if="mapUnavailable" class="alert-box info map-unavailable" role="alert">
+      {{ $t('map.unavailable') }} <RouterLink :to="{ name: 'reports' }">{{ $t('nav.reports') }}</RouterLink>
+    </p>
 
     <div class="toolbar card">
       <form class="row" style="flex-wrap: nowrap" @submit.prevent="searchPlace">
         <input v-model="search" class="input" :placeholder="$t('map.searchPlaceholder')" :aria-label="$t('map.searchPlaceholder')" />
-        <button type="submit" class="btn" :disabled="searching" :aria-label="$t('common.search')"><i class="pi pi-search" /></button>
+        <button type="submit" class="btn" :disabled="searching" :aria-label="$t('common.search')"><i aria-hidden="true" class="pi pi-search" /></button>
       </form>
 
       <div class="row" style="gap: 6px">
-        <button type="button" class="chip" :class="{ active: mode === 'markers' }" @click="mode = 'markers'"><i class="pi pi-map-marker" /> {{ $t('map.markers') }}</button>
-        <button type="button" class="chip" :class="{ active: mode === 'heatmap' }" @click="mode = 'heatmap'"><i class="pi pi-sun" /> {{ $t('map.heatmap') }}</button>
+        <button type="button" class="chip" :class="{ active: mode === 'markers' }" :aria-pressed="mode === 'markers'" @click="mode = 'markers'"><i aria-hidden="true" class="pi pi-map-marker" /> {{ $t('map.markers') }}</button>
+        <button type="button" class="chip" :class="{ active: mode === 'heatmap' }" :aria-pressed="mode === 'heatmap'" @click="mode = 'heatmap'"><i aria-hidden="true" class="pi pi-sun" /> {{ $t('map.heatmap') }}</button>
       </div>
 
       <div v-if="mode === 'markers'" class="row">
@@ -240,18 +257,18 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="actions">
-      <button type="button" class="btn" @click="reportHere"><i class="pi pi-plus" /> {{ $t('map.reportHere') }}</button>
+      <button type="button" class="btn" @click="reportHere"><i aria-hidden="true" class="pi pi-plus" /> {{ $t('map.reportHere') }}</button>
     </div>
 
     <aside v-if="selected" class="detail card" aria-live="polite">
-      <button type="button" class="icon-btn close" :aria-label="$t('common.close')" @click="selected = null"><i class="pi pi-times" /></button>
+      <button type="button" class="icon-btn close" :aria-label="$t('common.close')" @click="selected = null"><i aria-hidden="true" class="pi pi-times" /></button>
       <div v-if="selectedLoading || !selected.title" class="loading"><span class="spinner" /></div>
       <template v-else>
         <img v-if="selected.image" :src="selected.image" :alt="selected.title" class="photo" />
         <ReportBadges :type="selected.type" :severity="selected.severity" :status="selected.status" />
         <h3>{{ selected.title }}</h3>
         <p v-if="selected.detail" class="muted">{{ selected.detail }}</p>
-        <p class="small muted"><i class="pi pi-map-marker" /> {{ selected.address }}</p>
+        <p class="small muted"><i aria-hidden="true" class="pi pi-map-marker" /> {{ selected.address }}</p>
         <RouterLink :to="{ name: 'report-detail', params: { id: selected.id } }" class="btn btn-block">{{ $t('map.viewDetail') }}</RouterLink>
       </template>
     </aside>
@@ -271,6 +288,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .map-page { position: relative; height: calc(100vh - var(--topbar-h)); }
 .map { position: absolute; inset: 0; }
+.map-unavailable { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(440px, calc(100% - 32px)); z-index: 2; text-align: center; }
 .toolbar { position: absolute; top: 14px; left: 14px; width: min(360px, calc(100% - 28px)); display: flex; flex-direction: column; gap: 10px; padding: 12px; z-index: 5; }
 .toolbar .select { flex: 1; min-width: 0; }
 .legend { display: flex; gap: 12px; flex-wrap: wrap; }

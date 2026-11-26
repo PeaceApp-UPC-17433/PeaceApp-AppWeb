@@ -70,7 +70,14 @@ async function onPhoto(e) {
   if (!file) return
   uploading.value = true
   try {
-    const url = await uploadImage(file)
+    let url
+    try {
+      url = await uploadImage(file)
+    } catch {
+      // Error del tercero (Cloudinary): axios trae `status`, pero no es un error de la API de PeaceApp.
+      toast.error(t('reportForm.uploadFailed'))
+      return
+    }
     await usersApi.update(profile.value.id, { profile_image: url })
     await session.refreshProfile()
     toast.success(t('profile.photoUpdated'))
@@ -117,15 +124,15 @@ async function deleteAccount() {
     <section class="card head">
       <div class="avatar">
         <img v-if="profile.profile_image" :src="profile.profile_image" alt="" />
-        <i v-else class="pi pi-user" />
+        <i aria-hidden="true" v-else class="pi pi-user" />
       </div>
       <div class="grow">
         <h2>{{ session.fullName.value }}</h2>
         <p class="muted">{{ profile.email }}</p>
       </div>
       <label class="btn btn-secondary" :class="{ disabled: uploading }">
-        <i class="pi" :class="uploading ? 'pi-spin pi-spinner' : 'pi-camera'" /> {{ $t('profile.changePhoto') }}
-        <input type="file" accept="image/*" hidden :disabled="uploading" @change="onPhoto" />
+        <i aria-hidden="true" class="pi" :class="uploading ? 'pi-spin pi-spinner' : 'pi-camera'" /> {{ $t('profile.changePhoto') }}
+        <input type="file" accept="image/*" class="sr-only" :disabled="uploading" @change="onPhoto" />
       </label>
     </section>
 
@@ -184,7 +191,7 @@ async function deleteAccount() {
     <section class="card stack danger-zone">
       <h3>{{ $t('profile.dangerZone') }}</h3>
       <p class="muted">{{ $t('profile.deleteWarning') }}</p>
-      <div><button type="button" class="btn btn-danger" @click="deleteOpen = true"><i class="pi pi-trash" /> {{ $t('profile.deleteAccount') }}</button></div>
+      <div><button type="button" class="btn btn-danger" @click="deleteOpen = true"><i aria-hidden="true" class="pi pi-trash" /> {{ $t('profile.deleteAccount') }}</button></div>
     </section>
 
     <ConfirmDialog v-model="deleteOpen" :title="$t('profile.deleteAccount')" :message="$t('profile.deleteConfirm')" danger :busy="deleting" :confirm-label="$t('profile.deleteAccount')" @confirm="deleteAccount" />

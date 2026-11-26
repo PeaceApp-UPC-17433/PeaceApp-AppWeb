@@ -89,7 +89,7 @@ onMounted(load)
 
 <template>
   <div class="page page-narrow">
-    <RouterLink :to="{ name: 'reports' }" class="small"><i class="pi pi-arrow-left" /> {{ $t('reportDetail.back') }}</RouterLink>
+    <RouterLink :to="{ name: 'reports' }" class="small"><i aria-hidden="true" class="pi pi-arrow-left" /> {{ $t('reportDetail.back') }}</RouterLink>
 
     <LoadingBlock v-if="loading" />
     <EmptyState v-else-if="notFound || !report" icon="pi-search" :text="$t('reportDetail.notFound')" />
@@ -101,20 +101,20 @@ onMounted(load)
         <h1>{{ report.title }}</h1>
         <p v-if="report.detail" class="detail">{{ report.detail }}</p>
         <dl class="meta">
-          <div><dt><i class="pi pi-map-marker" /> {{ $t('reportDetail.address') }}</dt><dd>{{ report.address }}</dd></div>
-          <div><dt><i class="pi pi-clock" /> {{ $t('reportDetail.occurredAt') }}</dt><dd>{{ dateTime(report.occurredAt) }}</dd></div>
-          <div><dt><i class="pi pi-calendar" /> {{ $t('reportDetail.createdAt') }}</dt><dd>{{ dateTime(report.createdAt) }}</dd></div>
+          <div><dt><i aria-hidden="true" class="pi pi-map-marker" /> {{ $t('reportDetail.address') }}</dt><dd>{{ report.address }}</dd></div>
+          <div><dt><i aria-hidden="true" class="pi pi-clock" /> {{ $t('reportDetail.occurredAt') }}</dt><dd>{{ dateTime(report.occurredAt) }}</dd></div>
+          <div><dt><i aria-hidden="true" class="pi pi-calendar" /> {{ $t('reportDetail.createdAt') }}</dt><dd>{{ dateTime(report.createdAt) }}</dd></div>
         </dl>
 
         <div class="row">
-          <RouterLink v-if="canEdit" :to="{ name: 'report-edit', params: { id: report.id } }" class="btn btn-secondary"><i class="pi pi-pencil" /> {{ $t('common.edit') }}</RouterLink>
-          <button type="button" v-if="canEdit" class="btn btn-secondary" @click="deleteOpen = true"><i class="pi pi-trash" /> {{ $t('common.delete') }}</button>
-          <button type="button" v-if="!isOwner" class="btn btn-ghost" @click="flagOpen = true"><i class="pi pi-flag" /> {{ $t('flag.title') }}</button>
+          <RouterLink v-if="canEdit" :to="{ name: 'report-edit', params: { id: report.id } }" class="btn btn-secondary"><i aria-hidden="true" class="pi pi-pencil" /> {{ $t('common.edit') }}</RouterLink>
+          <button type="button" v-if="canEdit" class="btn btn-secondary" @click="deleteOpen = true"><i aria-hidden="true" class="pi pi-trash" /> {{ $t('common.delete') }}</button>
+          <button type="button" v-if="!isOwner" class="btn btn-ghost" @click="flagOpen = true"><i aria-hidden="true" class="pi pi-flag" /> {{ $t('flag.title') }}</button>
         </div>
       </article>
 
       <section v-if="session.state.isAdmin && nextStatuses.length" class="card stack">
-        <h3>{{ $t('reportDetail.moderation') }}</h3>
+        <h2 class="h3">{{ $t('reportDetail.moderation') }}</h2>
         <div class="row">
           <select v-model="newStatus" class="select grow" :aria-label="$t('report.statusLabel')">
             <option value="" disabled>{{ $t('reportDetail.changeStatus') }}</option>

@@ -11,10 +11,10 @@ const { relative } = useFormat()
     <div v-if="report.image" class="thumb" :style="{ backgroundImage: `url('${report.image}')` }" />
     <div class="body">
       <ReportBadges :type="report.type" :severity="report.severity" :status="report.status" />
-      <h3>{{ report.title }}</h3>
+      <h2 class="h3">{{ report.title }}</h2>
       <p v-if="report.detail" class="detail">{{ report.detail }}</p>
-      <p class="muted small"><i class="pi pi-map-marker" /> {{ report.address }}</p>
-      <p class="muted small"><i class="pi pi-clock" /> {{ relative(report.occurredAt) }}</p>
+      <p class="muted small"><i aria-hidden="true" class="pi pi-map-marker" /> {{ report.address }}</p>
+      <p class="muted small"><i aria-hidden="true" class="pi pi-clock" /> {{ relative(report.occurredAt) }}</p>
     </div>
   </RouterLink>
 </template>

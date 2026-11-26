@@ -47,7 +47,7 @@ onBeforeUnmount(() => {
 
       <nav class="nav" :aria-label="$t('nav.main')">
         <RouterLink v-for="l in links" :key="l.to" :to="l.to" class="nav-link">
-          <i class="pi" :class="l.icon" />
+          <i aria-hidden="true" class="pi" :class="l.icon" />
           <span class="nav-label">{{ $t(l.label) }}</span>
           <span v-if="l.badge" class="counter">{{ l.badge > 99 ? '99+' : l.badge }}</span>
         </RouterLink>
@@ -58,15 +58,15 @@ onBeforeUnmount(() => {
         <div class="user" @click.stop>
           <button type="button" class="avatar-btn" :aria-label="$t('nav.account')" @click="menuOpen = !menuOpen">
             <img v-if="session.state.profile?.profile_image" :src="session.state.profile.profile_image" alt="" />
-            <i v-else class="pi pi-user" />
+            <i aria-hidden="true" v-else class="pi pi-user" />
           </button>
           <div v-if="menuOpen" class="menu">
             <p class="menu-name">{{ session.fullName.value }}</p>
             <p class="menu-mail">{{ session.state.email }}</p>
-            <RouterLink to="/profile" class="menu-item" @click="menuOpen = false"><i class="pi pi-id-card" /> {{ $t('nav.profile') }}</RouterLink>
-            <a href="#" class="menu-item" @click.prevent="legal = 'faq'; menuOpen = false"><i class="pi pi-question-circle" /> {{ $t('footer.questions') }}</a>
-            <a href="#" class="menu-item" @click.prevent="legal = 'terms'; menuOpen = false"><i class="pi pi-book" /> {{ $t('footer.terms') }}</a>
-            <a href="#" class="menu-item danger" @click.prevent="logout"><i class="pi pi-sign-out" /> {{ $t('nav.logout') }}</a>
+            <RouterLink to="/profile" class="menu-item" @click="menuOpen = false"><i aria-hidden="true" class="pi pi-id-card" /> {{ $t('nav.profile') }}</RouterLink>
+            <a href="#" class="menu-item" @click.prevent="legal = 'faq'; menuOpen = false"><i aria-hidden="true" class="pi pi-question-circle" /> {{ $t('footer.questions') }}</a>
+            <a href="#" class="menu-item" @click.prevent="legal = 'terms'; menuOpen = false"><i aria-hidden="true" class="pi pi-book" /> {{ $t('footer.terms') }}</a>
+            <a href="#" class="menu-item danger" @click.prevent="logout"><i aria-hidden="true" class="pi pi-sign-out" /> {{ $t('nav.logout') }}</a>
           </div>
         </div>
       </div>

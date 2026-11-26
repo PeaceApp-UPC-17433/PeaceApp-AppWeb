@@ -168,7 +168,7 @@ h1 { color: var(--brand-900); font-size: clamp(29px, 2.6vw, 38px); line-height: 
 .login-submit:hover { background: var(--brand-900); }
 .register-link { margin-top: 26px; text-align: center; font-size: 13px; }
 .register-link a { font-weight: 650; margin-left: 4px; }
-.access-note { display: flex; align-items: center; justify-content: center; gap: 7px; padding-top: 24px; margin-top: 30px; border-top: 1px solid #e9eef2; color: #6b7d89; font-size: 12px; }
+.access-note { display: flex; align-items: center; justify-content: center; gap: 7px; padding-top: 24px; margin-top: 30px; border-top: 1px solid #e9eef2; color: var(--text-muted); font-size: 12px; }
 .access-note i { font-size: 11px; }
 .login-form > .alert-box { margin-bottom: 20px; }
 .code-input { min-height: 58px; text-align: center; font-size: 28px; font-weight: 700; letter-spacing: 12px; text-indent: 12px; }

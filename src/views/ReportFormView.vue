@@ -29,6 +29,7 @@ const uploading = ref(false)
 const errors = ref({})
 const mapEl = ref(null)
 const map = shallowRef(null)
+const mapUnavailable = ref(false)
 let geoSeq = 0
 
 const form = reactive({
@@ -150,7 +151,12 @@ onMounted(async () => {
   }
   // El contenedor del mapa existe solo cuando termina la carga.
   await new Promise((r) => setTimeout(r))
-  initMap(center.lng, center.lat)
+  try {
+    initMap(center.lng, center.lat)
+  } catch {
+    // Sin WebGL no hay mapa, pero se puede reportar con la ubicación del navegador y la dirección editable.
+    mapUnavailable.value = true
+  }
   if (!editing.value) setPosition(center.lng, center.lat)
 })
 
@@ -205,10 +211,10 @@ onBeforeUnmount(() => {
             <span class="label">{{ $t('reportForm.evidence') }} <span class="muted">({{ $t('common.optional') }})</span></span>
             <div class="row">
               <label class="btn btn-secondary" :class="{ disabled: uploading }">
-                <i class="pi" :class="uploading ? 'pi-spin pi-spinner' : 'pi-upload'" /> {{ $t('reportForm.upload') }}
-                <input type="file" accept="image/*" hidden :disabled="uploading" @change="onFile" />
+                <i aria-hidden="true" class="pi" :class="uploading ? 'pi-spin pi-spinner' : 'pi-upload'" /> {{ $t('reportForm.upload') }}
+                <input type="file" accept="image/*" class="sr-only" :disabled="uploading" @change="onFile" />
               </label>
-              <button v-if="form.image" type="button" class="btn btn-ghost" @click="clearImage"><i class="pi pi-times" /> {{ $t('common.remove') }}</button>
+              <button v-if="form.image" type="button" class="btn btn-ghost" @click="clearImage"><i aria-hidden="true" class="pi pi-times" /> {{ $t('common.remove') }}</button>
             </div>
             <img v-if="form.image" :src="preview || form.image" alt="" class="preview" />
           </div>
@@ -217,8 +223,9 @@ onBeforeUnmount(() => {
 
       <div class="card stack sticky">
         <span class="label">{{ $t('reportForm.location') }}</span>
-        <div class="map-box"><div ref="mapEl" class="map" /><div class="pin"><i class="pi pi-map-marker" /></div></div>
-        <p class="hint">{{ $t('reportForm.mapHint') }}</p>
+        <div class="map-box"><div ref="mapEl" class="map" /><div class="pin"><i aria-hidden="true" class="pi pi-map-marker" /></div></div>
+        <p v-if="mapUnavailable" class="alert-box info" role="alert">{{ $t('reportForm.mapUnavailable') }}</p>
+        <p v-else class="hint">{{ $t('reportForm.mapHint') }}</p>
         <div class="row">
           <button type="submit" class="btn grow" :disabled="busy || uploading">{{ busy ? $t('common.loading') : editing ? $t('common.save') : $t('reportForm.send') }}</button>
           <button type="button" class="btn btn-secondary" @click="router.back()">{{ $t('common.cancel') }}</button>

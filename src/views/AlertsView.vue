@@ -133,12 +133,12 @@ onMounted(() => load())
     <template v-if="tab === 'list'">
       <div class="row row-between">
         <div class="row" style="gap: 6px">
-          <button type="button" class="chip" :class="{ active: !unreadOnly }" @click="unreadOnly = false; load().catch(() => {})">{{ $t('common.all') }}</button>
-          <button type="button" class="chip" :class="{ active: unreadOnly }" @click="unreadOnly = true; load().catch(() => {})">{{ $t('common.unread') }}</button>
+          <button type="button" class="chip" :class="{ active: !unreadOnly }" :aria-pressed="!unreadOnly" @click="unreadOnly = false; load().catch(() => {})">{{ $t('common.all') }}</button>
+          <button type="button" class="chip" :class="{ active: unreadOnly }" :aria-pressed="unreadOnly" @click="unreadOnly = true; load().catch(() => {})">{{ $t('common.unread') }}</button>
         </div>
         <div class="row" style="gap: 6px">
-          <button type="button" class="btn btn-secondary btn-sm" @click="readAll"><i class="pi pi-check-circle" /> {{ $t('common.markAllRead') }}</button>
-          <button type="button" class="btn btn-ghost btn-sm" :disabled="!data.totalElements" @click="confirmAll = true"><i class="pi pi-trash" /> {{ $t('alerts.deleteAll') }}</button>
+          <button type="button" class="btn btn-secondary btn-sm" @click="readAll"><i aria-hidden="true" class="pi pi-check-circle" /> {{ $t('common.markAllRead') }}</button>
+          <button type="button" class="btn btn-ghost btn-sm" :disabled="!data.totalElements" @click="confirmAll = true"><i aria-hidden="true" class="pi pi-trash" /> {{ $t('alerts.deleteAll') }}</button>
         </div>
       </div>
 
@@ -150,11 +150,11 @@ onMounted(() => load())
             <ReportBadges :type="a.type" :severity="a.severity" />
             <h3>{{ a.title || $t(`report.type.${a.type}`) }}</h3>
             <p class="muted small">
-              <i class="pi pi-compass" /> {{ $t('alerts.away', { distance: distance(a.distanceMeters) }) }}
+              <i aria-hidden="true" class="pi pi-compass" /> {{ $t('alerts.away', { distance: distance(a.distanceMeters) }) }}
               · <span :title="dateTime(a.createdAt)">{{ relative(a.createdAt) }}</span>
             </p>
           </RouterLink>
-          <button type="button" class="icon-btn" :title="$t('common.delete')" @click="remove(a)"><i class="pi pi-trash" /></button>
+          <button type="button" class="icon-btn" :title="$t('common.delete')" @click="remove(a)"><i aria-hidden="true" class="pi pi-trash" /></button>
         </li>
       </ul>
       <AppPagination :page="data.page" :total-pages="data.totalPages" :total-elements="data.totalElements" @change="load" />
@@ -170,7 +170,7 @@ onMounted(() => load())
             {{ settings.latitude.toFixed(5) }}, {{ settings.longitude.toFixed(5) }} · {{ relative(settings.locationUpdatedAt) }}
           </p>
           <p v-else class="alert-box info">{{ $t('alerts.noLocation') }}</p>
-          <div><button type="button" class="btn btn-secondary" :disabled="locating" @click="updateLocation"><i class="pi pi-compass" /> {{ $t('alerts.updateLocation') }}</button></div>
+          <div><button type="button" class="btn btn-secondary" :disabled="locating" @click="updateLocation"><i aria-hidden="true" class="pi pi-compass" /> {{ $t('alerts.updateLocation') }}</button></div>
         </section>
 
         <section class="card stack">
@@ -188,8 +188,8 @@ onMounted(() => load())
           <h3>{{ $t('alerts.ignoredTypes') }}</h3>
           <p class="muted small">{{ $t('alerts.ignoredHint') }}</p>
           <div class="row">
-            <button v-for="ty in REPORT_TYPES" :key="ty.value" type="button" class="chip" :class="{ active: settings.ignoredTypes.includes(ty.value) }" @click="toggleType(ty.value)">
-              <i class="pi" :class="ty.icon" /> {{ $t(`report.type.${ty.value}`) }}
+            <button v-for="ty in REPORT_TYPES" :key="ty.value" type="button" class="chip" :class="{ active: settings.ignoredTypes.includes(ty.value) }" :aria-pressed="settings.ignoredTypes.includes(ty.value)" @click="toggleType(ty.value)">
+              <i aria-hidden="true" class="pi" :class="ty.icon" /> {{ $t(`report.type.${ty.value}`) }}
             </button>
           </div>
         </section>

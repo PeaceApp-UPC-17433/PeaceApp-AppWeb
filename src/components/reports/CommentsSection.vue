@@ -66,11 +66,11 @@ onMounted(() => load())
 
 <template>
   <section class="card">
-    <h3 class="card-title">{{ $t('comments.title') }} ({{ data.totalElements }})</h3>
+    <h2 class="card-title h3">{{ $t('comments.title') }} ({{ data.totalElements }})</h2>
 
     <form class="row" style="align-items: flex-start" @submit.prevent="send">
       <textarea v-model="text" :aria-label="$t('comments.placeholder')" class="textarea grow" rows="2" maxlength="500" :placeholder="$t('comments.placeholder')" />
-      <button type="submit" class="btn" :disabled="sending || !text.trim()"><i class="pi pi-send" /> {{ $t('comments.send') }}</button>
+      <button type="submit" class="btn" :disabled="sending || !text.trim()"><i aria-hidden="true" class="pi pi-send" /> {{ $t('comments.send') }}</button>
     </form>
 
     <div v-if="loading" class="loading"><span class="spinner" /></div>
@@ -79,13 +79,13 @@ onMounted(() => load())
       <li v-for="c in data.content" :key="c.id">
         <div class="row row-between">
           <span class="muted small">
-            <i class="pi pi-user" />
+            <i aria-hidden="true" class="pi pi-user" />
             {{ c.authorId === session.profileId.value ? $t('comments.you') : c.authorName || $t('comments.neighbor') }}
             · {{ relative(c.createdAt) }}
           </span>
           <span>
-            <button type="button" v-if="canFlag(c)" class="icon-btn" :title="$t('flag.title')" @click="flag(c)"><i class="pi pi-flag" /></button>
-            <button type="button" v-if="canDelete(c)" class="icon-btn" :title="$t('common.delete')" @click="remove(c)"><i class="pi pi-trash" /></button>
+            <button type="button" v-if="canFlag(c)" class="icon-btn" :title="$t('flag.title')" :aria-label="$t('flag.title')" @click="flag(c)"><i aria-hidden="true" class="pi pi-flag" /></button>
+            <button type="button" v-if="canDelete(c)" class="icon-btn" :title="$t('common.delete')" :aria-label="$t('common.delete')" @click="remove(c)"><i aria-hidden="true" class="pi pi-trash" /></button>
           </span>
         </div>
         <p>{{ c.text }}</p>

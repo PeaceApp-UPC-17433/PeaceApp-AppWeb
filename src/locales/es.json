@@ -16,7 +16,9 @@
     "markAllRead": "Marcar todo como leído",
     "language": "Idioma",
     "pagination": "Paginación",
-    "pageOf": "Página {page} de {total}"
+    "pageOf": "Página {page} de {total}",
+    "previousPage": "Página anterior",
+    "nextPage": "Página siguiente"
   },
   "nav": {
     "main": "Navegación principal",
@@ -203,7 +205,8 @@
     "created": "Reporte publicado.",
     "updated": "Reporte actualizado.",
     "uploadFailed": "No se pudo subir la imagen. Inténtalo de nuevo.",
-    "needLocation": "Elige una ubicación en el mapa."
+    "needLocation": "Elige una ubicación en el mapa.",
+    "mapUnavailable": "No podemos mostrar el mapa en este navegador. Usaremos tu ubicación actual; puedes corregir la dirección."
   },
   "map": {
     "searchPlaceholder": "Buscar un lugar",
@@ -221,14 +224,16 @@
       "MEDIUM": "Medio",
       "HIGH": "Alto",
       "CRITICAL": "Crítico"
-    }
+    },
+    "unavailable": "No podemos mostrar el mapa en este navegador (WebGL no está disponible). Puedes ver los reportes en la lista."
   },
   "votes": {
     "title": "¿Confirmas este reporte?",
     "confirm": "Confirmar",
     "dispute": "Dudar",
     "progress": "{net} de {threshold} confirmaciones netas para verificarlo",
-    "cannot": "No puedes votar en tu propio reporte ni en uno cerrado."
+    "cannot": "No puedes votar en tu propio reporte ni en uno cerrado.",
+    "meter": "Avance hacia la verificación del reporte"
   },
   "comments": {
     "title": "Comentarios",

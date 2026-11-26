@@ -4,7 +4,7 @@ defineProps({ icon: { type: String, default: 'pi-inbox' }, text: String })
 
 <template>
   <div class="empty">
-    <i class="pi" :class="icon" />
+    <i aria-hidden="true" class="pi" :class="icon" />
     <p>{{ text }}</p>
     <slot />
   </div>
