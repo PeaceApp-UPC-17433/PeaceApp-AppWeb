@@ -1,5 +1,7 @@
 
 // Valores del contrato del backend (README, fases 2 a 4). `color` alimenta badges y mapa.
+// Los colores de severidad y estado van con texto blanco: todos cumplen contraste WCAG AA (>= 4.5:1).
+// RISK_COLORS solo pinta el mapa de calor (sin texto encima) y conserva los tonos claros.
 export const REPORT_TYPES = [
     { value: 'ROBO', icon: 'pi-wallet' },
     { value: 'HURTO', icon: 'pi-shopping-bag' },
@@ -10,15 +12,15 @@ export const REPORT_TYPES = [
 ]
 
 export const SEVERITIES = [
-    { value: 'LOW', color: '#2e9e6b' },
-    { value: 'MEDIUM', color: '#e0a100' },
-    { value: 'HIGH', color: '#e8710a' }
+    { value: 'LOW', color: '#1e7a52' },
+    { value: 'MEDIUM', color: '#8a5a00' },
+    { value: 'HIGH', color: '#c2410c' }
 ]
 
 export const REPORT_STATUSES = [
-    { value: 'PENDIENTE_VALIDACION', color: '#6b7a8c' },
+    { value: 'PENDIENTE_VALIDACION', color: '#5b6878' },
     { value: 'EN_MODERACION', color: '#1f79aa' },
-    { value: 'VALIDADO', color: '#2e9e6b' },
+    { value: 'VALIDADO', color: '#1e7a52' },
     { value: 'DESCARTADO', color: '#b0504a' }
 ]
 

@@ -19,7 +19,7 @@ const level = computed(() => (props.value ? ['weak', 'weak', 'fair', 'good', 'st
     </div>
     <ul>
       <li v-for="r in results" :key="r.key" :class="{ ok: r.ok }">
-        <span class="tick" aria-hidden="true"><i class="pi pi-check" /></span>
+        <span class="tick" aria-hidden="true"><i aria-hidden="true" class="pi pi-check" /></span>
         <span>{{ $t(`auth.rules.${r.key}`) }}</span>
         <span class="sr-only">{{ r.ok ? $t('auth.rules.met') : $t('auth.rules.pending') }}</span>
       </li>
@@ -42,7 +42,7 @@ const level = computed(() => (props.value ? ['weak', 'weak', 'fair', 'good', 'st
   transition: transform var(--dur-base) var(--ease), background-color var(--dur-base) var(--ease);
 }
 .meter span.on::after { transform: scaleX(1); }
-.level { min-width: 92px; text-align: right; font-size: 12px; font-weight: 650; color: var(--bar); transition: color var(--dur-base) var(--ease); }
+.level { min-width: 92px; text-align: right; font-size: 12px; font-weight: 650; color: var(--text-muted); transition: color var(--dur-base) var(--ease); }
 ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
 li { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--text-muted); transition: color var(--dur-base) var(--ease); }
 li.ok { color: var(--text); }

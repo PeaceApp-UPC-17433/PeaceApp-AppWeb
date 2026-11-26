@@ -155,7 +155,7 @@ onMounted(loadStatus)
 <template>
   <section class="card stack mfa" aria-labelledby="mfa-title">
     <header class="mfa-head">
-      <span class="shield" :class="{ on: enabled }" aria-hidden="true"><i class="pi" :class="enabled ? 'pi-shield' : 'pi-lock'" /></span>
+      <span class="shield" :class="{ on: enabled }" aria-hidden="true"><i aria-hidden="true" class="pi" :class="enabled ? 'pi-shield' : 'pi-lock'" /></span>
       <div class="grow">
         <h3 id="mfa-title">{{ $t('mfa.title') }}</h3>
         <p class="muted">{{ enabled ? $t('mfa.onHint', { n: remaining }) : $t('mfa.offHint') }}</p>

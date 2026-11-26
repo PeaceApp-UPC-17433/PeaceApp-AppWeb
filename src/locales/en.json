@@ -16,7 +16,9 @@
     "markAllRead": "Mark all as read",
     "language": "Language",
     "pagination": "Pagination",
-    "pageOf": "Page {page} of {total}"
+    "pageOf": "Page {page} of {total}",
+    "previousPage": "Previous page",
+    "nextPage": "Next page"
   },
   "nav": {
     "main": "Main navigation",
@@ -203,7 +205,8 @@
     "created": "Report published.",
     "updated": "Report updated.",
     "uploadFailed": "The image could not be uploaded. Please try again.",
-    "needLocation": "Pick a location on the map."
+    "needLocation": "Pick a location on the map.",
+    "mapUnavailable": "We can't show the map in this browser. We'll use your current location; you can correct the address."
   },
   "map": {
     "searchPlaceholder": "Search a place",
@@ -221,14 +224,16 @@
       "MEDIUM": "Medium",
       "HIGH": "High",
       "CRITICAL": "Critical"
-    }
+    },
+    "unavailable": "We can't show the map in this browser (WebGL is not available). You can still browse the reports list."
   },
   "votes": {
     "title": "Do you confirm this report?",
     "confirm": "Confirm",
     "dispute": "Doubt",
     "progress": "{net} of {threshold} net confirmations to verify it",
-    "cannot": "You cannot vote on your own report or on a closed one."
+    "cannot": "You cannot vote on your own report or on a closed one.",
+    "meter": "Progress towards verifying the report"
   },
   "comments": {
     "title": "Comments",

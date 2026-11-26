@@ -109,7 +109,7 @@ onBeforeUnmount(() => {
 
           <div v-else key="form" class="body">
             <header>
-              <span class="icon" aria-hidden="true"><i class="pi pi-envelope" /></span>
+              <span class="icon" aria-hidden="true"><i aria-hidden="true" class="pi pi-envelope" /></span>
               <div>
                 <h2 id="verify-title">{{ $t('verify.title') }}</h2>
                 <p class="muted">{{ $t('verify.body', { email }) }}</p>

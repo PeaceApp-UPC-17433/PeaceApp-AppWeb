@@ -3,6 +3,8 @@ server {
     server_name _;
     root /usr/share/nginx/html;
     index index.html;
+    # No publicar la versión de nginx en la cabecera Server ni en las páginas de error (ZAP 10036).
+    server_tokens off;
 
     gzip on;
     gzip_types text/css application/javascript application/json image/svg+xml;

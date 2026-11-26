@@ -121,7 +121,7 @@ onMounted(loadMetrics)
     <!-- Denuncias -->
     <template v-else-if="tab === 'flags'">
       <div class="row">
-        <button type="button" v-for="s in FLAG_STATUSES" :key="s" class="chip" :class="{ active: flagStatus === s }" @click="flagStatus = s">{{ $t(`admin.flagStatus.${s}`) }}</button>
+        <button type="button" v-for="s in FLAG_STATUSES" :key="s" class="chip" :class="{ active: flagStatus === s }" :aria-pressed="flagStatus === s" @click="flagStatus = s">{{ $t(`admin.flagStatus.${s}`) }}</button>
       </div>
       <LoadingBlock v-if="loading" />
       <EmptyState v-else-if="!flags.content.length" icon="pi-shield" :text="$t('admin.noFlags')" />
@@ -148,7 +148,7 @@ onMounted(loadMetrics)
     <!-- Cola de reportes -->
     <template v-else-if="tab === 'queue'">
       <div class="row">
-        <button type="button" v-for="s in ['PENDIENTE_VALIDACION', 'EN_MODERACION', 'VALIDADO']" :key="s" class="chip" :class="{ active: queueStatus === s }" @click="queueStatus = s">{{ $t(`report.status.${s}`) }}</button>
+        <button type="button" v-for="s in ['PENDIENTE_VALIDACION', 'EN_MODERACION', 'VALIDADO']" :key="s" class="chip" :class="{ active: queueStatus === s }" :aria-pressed="queueStatus === s" @click="queueStatus = s">{{ $t(`report.status.${s}`) }}</button>
       </div>
       <p class="muted small">{{ $t('admin.queueHint') }}</p>
       <LoadingBlock v-if="loading" />

@@ -53,7 +53,7 @@ onMounted(() => load())
         <h1>{{ $t('reports.title') }}</h1>
         <p>{{ $t('reports.subtitle') }}</p>
       </div>
-      <RouterLink :to="{ name: 'report-new' }" class="btn"><i class="pi pi-plus" /> {{ $t('reports.new') }}</RouterLink>
+      <RouterLink :to="{ name: 'report-new' }" class="btn"><i aria-hidden="true" class="pi pi-plus" /> {{ $t('reports.new') }}</RouterLink>
     </div>
 
     <section class="card stack">
@@ -62,8 +62,8 @@ onMounted(() => load())
           <input v-model="filters.q" class="input" type="search" :placeholder="$t('reports.search')" :aria-label="$t('reports.search')" />
         </div>
         <div class="row" style="gap: 6px">
-          <button type="button" class="chip" :class="{ active: !filters.mine }" @click="filters.mine = false">{{ $t('reports.all') }}</button>
-          <button type="button" class="chip" :class="{ active: filters.mine }" @click="filters.mine = true">{{ $t('reports.mine') }}</button>
+          <button type="button" class="chip" :class="{ active: !filters.mine }" :aria-pressed="!filters.mine" @click="filters.mine = false">{{ $t('reports.all') }}</button>
+          <button type="button" class="chip" :class="{ active: filters.mine }" :aria-pressed="filters.mine" @click="filters.mine = true">{{ $t('reports.mine') }}</button>
         </div>
       </div>
       <div class="filters">
@@ -85,7 +85,7 @@ onMounted(() => load())
           <option value="desc">{{ $t('reports.newest') }}</option>
           <option value="asc">{{ $t('reports.oldest') }}</option>
         </select>
-        <button type="button" class="btn btn-ghost" @click="reset"><i class="pi pi-filter-slash" /> {{ $t('reports.clear') }}</button>
+        <button type="button" class="btn btn-ghost" @click="reset"><i aria-hidden="true" class="pi pi-filter-slash" /> {{ $t('reports.clear') }}</button>
       </div>
     </section>
 

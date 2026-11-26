@@ -6,12 +6,12 @@ defineEmits(['change'])
 
 <template>
   <nav v-if="totalPages > 1" class="pager" :aria-label="$t('common.pagination')">
-    <button type="button" class="btn btn-secondary btn-sm" :disabled="page <= 0" @click="$emit('change', page - 1)">
-      <i class="pi pi-chevron-left" />
+    <button type="button" class="btn btn-secondary btn-sm" :aria-label="$t('common.previousPage')" :disabled="page <= 0" @click="$emit('change', page - 1)">
+      <i aria-hidden="true" class="pi pi-chevron-left" />
     </button>
     <span class="muted small">{{ $t('common.pageOf', { page: page + 1, total: totalPages }) }} · {{ totalElements }}</span>
-    <button type="button" class="btn btn-secondary btn-sm" :disabled="page >= totalPages - 1" @click="$emit('change', page + 1)">
-      <i class="pi pi-chevron-right" />
+    <button type="button" class="btn btn-secondary btn-sm" :aria-label="$t('common.nextPage')" :disabled="page >= totalPages - 1" @click="$emit('change', page + 1)">
+      <i aria-hidden="true" class="pi pi-chevron-right" />
     </button>
   </nav>
 </template>
