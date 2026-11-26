@@ -109,7 +109,7 @@ async function updateLocation() {
 
 function switchTab(name) {
   tab.value = name
-  if (name === 'settings') loadSettings()
+  if (name === 'settings') loadSettings().catch(() => {})
 }
 
 onMounted(() => load())
@@ -125,20 +125,20 @@ onMounted(() => load())
     </div>
 
     <div class="tabs" role="tablist">
-      <button class="tab" :class="{ active: tab === 'list' }" role="tab" @click="switchTab('list')">{{ $t('alerts.tabList') }}</button>
-      <button class="tab" :class="{ active: tab === 'settings' }" role="tab" @click="switchTab('settings')">{{ $t('alerts.tabSettings') }}</button>
+      <button type="button" class="tab" :class="{ active: tab === 'list' }" role="tab" @click="switchTab('list')">{{ $t('alerts.tabList') }}</button>
+      <button type="button" class="tab" :class="{ active: tab === 'settings' }" role="tab" @click="switchTab('settings')">{{ $t('alerts.tabSettings') }}</button>
     </div>
 
     <!-- Lista -->
     <template v-if="tab === 'list'">
       <div class="row row-between">
         <div class="row" style="gap: 6px">
-          <button class="chip" :class="{ active: !unreadOnly }" @click="unreadOnly = false; load()">{{ $t('common.all') }}</button>
-          <button class="chip" :class="{ active: unreadOnly }" @click="unreadOnly = true; load()">{{ $t('common.unread') }}</button>
+          <button type="button" class="chip" :class="{ active: !unreadOnly }" @click="unreadOnly = false; load().catch(() => {})">{{ $t('common.all') }}</button>
+          <button type="button" class="chip" :class="{ active: unreadOnly }" @click="unreadOnly = true; load().catch(() => {})">{{ $t('common.unread') }}</button>
         </div>
         <div class="row" style="gap: 6px">
-          <button class="btn btn-secondary btn-sm" @click="readAll"><i class="pi pi-check-circle" /> {{ $t('common.markAllRead') }}</button>
-          <button class="btn btn-ghost btn-sm" :disabled="!data.totalElements" @click="confirmAll = true"><i class="pi pi-trash" /> {{ $t('alerts.deleteAll') }}</button>
+          <button type="button" class="btn btn-secondary btn-sm" @click="readAll"><i class="pi pi-check-circle" /> {{ $t('common.markAllRead') }}</button>
+          <button type="button" class="btn btn-ghost btn-sm" :disabled="!data.totalElements" @click="confirmAll = true"><i class="pi pi-trash" /> {{ $t('alerts.deleteAll') }}</button>
         </div>
       </div>
 
@@ -154,7 +154,7 @@ onMounted(() => load())
               · <span :title="dateTime(a.createdAt)">{{ relative(a.createdAt) }}</span>
             </p>
           </RouterLink>
-          <button class="icon-btn" :title="$t('common.delete')" @click="remove(a)"><i class="pi pi-trash" /></button>
+          <button type="button" class="icon-btn" :title="$t('common.delete')" @click="remove(a)"><i class="pi pi-trash" /></button>
         </li>
       </ul>
       <AppPagination :page="data.page" :total-pages="data.totalPages" :total-elements="data.totalElements" @change="load" />
@@ -207,7 +207,7 @@ onMounted(() => load())
           </select>
         </section>
 
-        <div><button class="btn" :disabled="saving">{{ $t('common.save') }}</button></div>
+        <div><button type="submit" class="btn" :disabled="saving">{{ $t('common.save') }}</button></div>
       </form>
     </template>
 

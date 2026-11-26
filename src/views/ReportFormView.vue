@@ -58,7 +58,7 @@ async function reverseGeocode(lng, lat) {
 function setPosition(lng, lat, geocode = true) {
   form.longitude = lng
   form.latitude = lat
-  if (geocode) reverseGeocode(lng, lat)
+  if (geocode) reverseGeocode(lng, lat).catch(() => {})
 }
 
 function initMap(lng, lat) {
@@ -144,9 +144,9 @@ onMounted(async () => {
     loading.value = false
   } else {
     form.occurredAt = toLocalInput()
-    const qLat = parseFloat(route.query.lat)
-    const qLng = parseFloat(route.query.lng)
-    center = !isNaN(qLat) && !isNaN(qLng) ? { lat: qLat, lng: qLng } : (await locate()) || currentOrFallback()
+    const qLat = Number.parseFloat(route.query.lat)
+    const qLng = Number.parseFloat(route.query.lng)
+    center = !Number.isNaN(qLat) && !Number.isNaN(qLng) ? { lat: qLat, lng: qLng } : (await locate()) || currentOrFallback()
   }
   // El contenedor del mapa existe solo cuando termina la carga.
   await new Promise((r) => setTimeout(r))
@@ -220,7 +220,7 @@ onBeforeUnmount(() => {
         <div class="map-box"><div ref="mapEl" class="map" /><div class="pin"><i class="pi pi-map-marker" /></div></div>
         <p class="hint">{{ $t('reportForm.mapHint') }}</p>
         <div class="row">
-          <button class="btn grow" :disabled="busy || uploading">{{ busy ? $t('common.loading') : editing ? $t('common.save') : $t('reportForm.send') }}</button>
+          <button type="submit" class="btn grow" :disabled="busy || uploading">{{ busy ? $t('common.loading') : editing ? $t('common.save') : $t('reportForm.send') }}</button>
           <button type="button" class="btn btn-secondary" @click="router.back()">{{ $t('common.cancel') }}</button>
         </div>
       </div>

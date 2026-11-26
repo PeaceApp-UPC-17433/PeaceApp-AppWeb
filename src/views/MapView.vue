@@ -55,7 +55,7 @@ function addMarker(p) {
   el.setAttribute('aria-label', t(`report.type.${p.type}`))
   el.style.setProperty('--pin', (severityMeta[p.severity] || severityMeta.MEDIUM).color)
   el.innerHTML = `<span class="pin"><svg viewBox="0 0 34 44" width="34" height="44" aria-hidden="true"><path d="M17 43C17 43 3 28.5 3 16.5a14 14 0 0 1 28 0C31 28.5 17 43 17 43z" fill="currentColor" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/></svg><i class="pi ${(typeMeta[p.type] || typeMeta.OTRO).icon}"></i></span>`
-  el.addEventListener('click', (ev) => { ev.stopPropagation(); select(p.id) })
+  el.addEventListener('click', (ev) => { ev.stopPropagation(); select(p.id).catch(() => {}) })
   const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' }).setLngLat([p.longitude, p.latitude]).addTo(map.value)
   markers.push(marker)
 }
@@ -89,7 +89,7 @@ async function load() {
 
 const scheduleLoad = () => {
   clearTimeout(loadTimer)
-  loadTimer = setTimeout(load, 350)
+  loadTimer = setTimeout(() => load().catch(() => {}), 350)
 }
 
 function setHeat(cells) {
@@ -192,7 +192,7 @@ onMounted(async () => {
     userLocation.denied = false
   })
   geolocate.on('error', () => { userLocation.denied = true })
-  map.value.on('load', () => { setupHeatLayers(); load(); geolocate.trigger() })
+  map.value.on('load', () => { setupHeatLayers(); load().catch(() => {}); geolocate.trigger() })
   map.value.on('moveend', scheduleLoad)
   map.value.on('click', () => (selected.value = null))
 })
@@ -211,12 +211,12 @@ onBeforeUnmount(() => {
     <div class="toolbar card">
       <form class="row" style="flex-wrap: nowrap" @submit.prevent="searchPlace">
         <input v-model="search" class="input" :placeholder="$t('map.searchPlaceholder')" :aria-label="$t('map.searchPlaceholder')" />
-        <button class="btn" :disabled="searching" :aria-label="$t('common.search')"><i class="pi pi-search" /></button>
+        <button type="submit" class="btn" :disabled="searching" :aria-label="$t('common.search')"><i class="pi pi-search" /></button>
       </form>
 
       <div class="row" style="gap: 6px">
-        <button class="chip" :class="{ active: mode === 'markers' }" @click="mode = 'markers'"><i class="pi pi-map-marker" /> {{ $t('map.markers') }}</button>
-        <button class="chip" :class="{ active: mode === 'heatmap' }" @click="mode = 'heatmap'"><i class="pi pi-sun" /> {{ $t('map.heatmap') }}</button>
+        <button type="button" class="chip" :class="{ active: mode === 'markers' }" @click="mode = 'markers'"><i class="pi pi-map-marker" /> {{ $t('map.markers') }}</button>
+        <button type="button" class="chip" :class="{ active: mode === 'heatmap' }" @click="mode = 'heatmap'"><i class="pi pi-sun" /> {{ $t('map.heatmap') }}</button>
       </div>
 
       <div v-if="mode === 'markers'" class="row">
@@ -240,11 +240,11 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="actions">
-      <button class="btn" @click="reportHere"><i class="pi pi-plus" /> {{ $t('map.reportHere') }}</button>
+      <button type="button" class="btn" @click="reportHere"><i class="pi pi-plus" /> {{ $t('map.reportHere') }}</button>
     </div>
 
     <aside v-if="selected" class="detail card" aria-live="polite">
-      <button class="icon-btn close" :aria-label="$t('common.close')" @click="selected = null"><i class="pi pi-times" /></button>
+      <button type="button" class="icon-btn close" :aria-label="$t('common.close')" @click="selected = null"><i class="pi pi-times" /></button>
       <div v-if="selectedLoading || !selected.title" class="loading"><span class="spinner" /></div>
       <template v-else>
         <img v-if="selected.image" :src="selected.image" :alt="selected.title" class="photo" />

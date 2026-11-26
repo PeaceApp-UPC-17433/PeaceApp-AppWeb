@@ -42,7 +42,7 @@ async function submit() {
         <input id="fp-email" v-model="email" class="input" type="email" required />
       </div>
       <p v-if="error" class="alert-box error" role="alert">{{ error }}</p>
-      <button class="btn btn-block" :disabled="busy">{{ $t('auth.sendLink') }}</button>
+      <button type="submit" class="btn btn-block" :disabled="busy">{{ $t('auth.sendLink') }}</button>
     </form>
     <RouterLink to="/login" class="small">{{ $t('auth.backToLogin') }}</RouterLink>
   </div>

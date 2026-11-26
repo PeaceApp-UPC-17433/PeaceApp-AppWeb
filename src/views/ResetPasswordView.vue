@@ -61,7 +61,7 @@ async function submit() {
         <span v-if="mismatch" class="field-error">{{ $t('auth.mismatch') }}</span>
       </div>
       <p v-if="error" class="alert-box error" role="alert">{{ error }}</p>
-      <button class="btn btn-block" :disabled="busy || !canSubmit">{{ $t('common.save') }}</button>
+      <button type="submit" class="btn btn-block" :disabled="busy || !canSubmit">{{ $t('common.save') }}</button>
     </form>
     <RouterLink to="/login" class="small">{{ $t('auth.backToLogin') }}</RouterLink>
   </div>

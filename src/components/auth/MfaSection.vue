@@ -210,7 +210,7 @@ onMounted(loadStatus)
         </div>
         <p v-if="error" class="alert-box error" role="alert">{{ error }}</p>
         <div class="row">
-          <button class="btn" :class="{ 'btn-danger': action === 'disable' }" :disabled="busy || !password || code.length < 6"><i v-if="busy" class="pi pi-spin pi-spinner" aria-hidden="true" /> {{ action === 'disable' ? $t('mfa.disable') : $t('mfa.regenerate') }}</button>
+          <button type="submit" class="btn" :class="{ 'btn-danger': action === 'disable' }" :disabled="busy || !password || code.length < 6"><i v-if="busy" class="pi pi-spin pi-spinner" aria-hidden="true" /> {{ action === 'disable' ? $t('mfa.disable') : $t('mfa.regenerate') }}</button>
           <button class="btn btn-secondary" type="button" @click="cancel">{{ $t('common.cancel') }}</button>
         </div>
       </form>

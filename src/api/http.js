@@ -25,7 +25,7 @@ export const setUnauthorizedHandler = (fn) => { onUnauthorized = fn }
 
 export const http = axios.create({ baseURL: env.apiUrl, timeout: 15000 })
 
-const newRequestId = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`)
+const newRequestId = () => crypto.randomUUID()
 
 http.interceptors.request.use((config) => {
     config.headers['X-Request-Id'] = newRequestId()

@@ -56,7 +56,7 @@ onBeforeUnmount(() => {
       <div class="right">
         <LanguageSwitch />
         <div class="user" @click.stop>
-          <button class="avatar-btn" :aria-label="$t('nav.account')" @click="menuOpen = !menuOpen">
+          <button type="button" class="avatar-btn" :aria-label="$t('nav.account')" @click="menuOpen = !menuOpen">
             <img v-if="session.state.profile?.profile_image" :src="session.state.profile.profile_image" alt="" />
             <i v-else class="pi pi-user" />
           </button>

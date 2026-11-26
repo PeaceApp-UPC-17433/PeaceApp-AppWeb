@@ -154,7 +154,7 @@ async function deleteAccount() {
           <span v-if="errors.phonenumber" class="field-error">{{ errors.phonenumber }}</span>
         </div>
       </div>
-      <div><button class="btn" :disabled="saving">{{ $t('common.save') }}</button></div>
+      <div><button type="submit" class="btn" :disabled="saving">{{ $t('common.save') }}</button></div>
     </form>
 
     <form class="card stack" @submit.prevent="changePassword">
@@ -176,7 +176,7 @@ async function deleteAccount() {
         </div>
       </div>
       <p v-if="passError" class="alert-box error" role="alert">{{ passError }}</p>
-      <div><button class="btn" :disabled="passBusy || !isStrongPassword(pass.next) || !pass.confirm || !!passMismatch">{{ $t('profile.updatePassword') }}</button></div>
+      <div><button type="submit" class="btn" :disabled="passBusy || !isStrongPassword(pass.next) || !pass.confirm || !!passMismatch">{{ $t('profile.updatePassword') }}</button></div>
     </form>
 
     <MfaSection />
@@ -184,7 +184,7 @@ async function deleteAccount() {
     <section class="card stack danger-zone">
       <h3>{{ $t('profile.dangerZone') }}</h3>
       <p class="muted">{{ $t('profile.deleteWarning') }}</p>
-      <div><button class="btn btn-danger" @click="deleteOpen = true"><i class="pi pi-trash" /> {{ $t('profile.deleteAccount') }}</button></div>
+      <div><button type="button" class="btn btn-danger" @click="deleteOpen = true"><i class="pi pi-trash" /> {{ $t('profile.deleteAccount') }}</button></div>
     </section>
 
     <ConfirmDialog v-model="deleteOpen" :title="$t('profile.deleteAccount')" :message="$t('profile.deleteConfirm')" danger :busy="deleting" :confirm-label="$t('profile.deleteAccount')" @confirm="deleteAccount" />

@@ -96,7 +96,7 @@ async function submit() {
       </label>
 
       <p v-if="error && !Object.keys(errors).length" class="alert-box error" role="alert">{{ error }}</p>
-      <button class="btn btn-block" :disabled="busy || !canSubmit">{{ busy ? $t('common.loading') : $t('auth.signUpAction') }}</button>
+      <button type="submit" class="btn btn-block" :disabled="busy || !canSubmit">{{ busy ? $t('common.loading') : $t('auth.signUpAction') }}</button>
     </form>
 
     <div class="alt-link">

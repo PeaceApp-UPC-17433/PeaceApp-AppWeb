@@ -16,8 +16,8 @@ const emit = defineEmits(['update:modelValue', 'confirm'])
   <AppDialog :model-value="modelValue" :title="title" width="440px" @update:model-value="emit('update:modelValue', $event)">
     <p>{{ message }}</p>
     <template #footer>
-      <button class="btn btn-secondary" :disabled="busy" @click="emit('update:modelValue', false)">{{ $t('common.cancel') }}</button>
-      <button class="btn" :class="{ 'btn-danger': danger }" :disabled="busy" @click="emit('confirm')">
+      <button type="button" class="btn btn-secondary" :disabled="busy" @click="emit('update:modelValue', false)">{{ $t('common.cancel') }}</button>
+      <button type="button" class="btn" :class="{ 'btn-danger': danger }" :disabled="busy" @click="emit('confirm')">
         {{ confirmLabel || $t('common.confirm') }}
       </button>
     </template>
