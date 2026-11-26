@@ -7,6 +7,8 @@ COPY . .
 RUN pnpm test && pnpm build
 
 FROM nginxinc/nginx-unprivileged:1.31-alpine
+USER root
+RUN apk upgrade --no-cache
 ENV API_UPSTREAM=http://api-gateway:8080 \
     API_URL=/api/v1
 COPY deploy/security-headers.conf /etc/nginx/security-headers.conf
