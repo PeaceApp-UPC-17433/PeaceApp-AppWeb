@@ -6,7 +6,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm test && pnpm build
 
-FROM nginxinc/nginx-unprivileged:1.27-alpine
+FROM nginxinc/nginx-unprivileged:1.31-alpine
 ENV API_UPSTREAM=http://api-gateway:8080 \
     API_URL=/api/v1
 COPY deploy/security-headers.conf /etc/nginx/security-headers.conf
