@@ -11,6 +11,11 @@ import { currentOrFallback, locate, userLocation } from '@/composables/useUserLo
 import { useToast } from '@/composables/useToast.js'
 import { useApiError } from '@/composables/useApiError.js'
 import ReportBadges from '@/components/reports/ReportBadges.vue'
+import { useCountUp } from '@/composables/useCountUp.js'
+import {
+  HEAT_LEGEND_GRADIENT, cellSizeForZoom, heatColorExpression, heatIntensityExpression, heatOpacity,
+  heatRadiusExpression, heatWeightExpression, hottestOf, toFeatureCollection, totalOf, easeOutCubic
+} from '@/map/heatmapModel.js'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -32,17 +37,49 @@ let loadTimer = null
 let loadSeq = 0
 
 const HEAT_SOURCE = 'heat-cells'
+const hotspot = ref(0)
+const { shown: shownCount, to: countTo, stop: countStop } = useCountUp(400)
+const reduceMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
-function boundsParams() {
+// Capa de calor: aparece con fundido (400 ms) y luego "respira" muy poco (ambiente).
+let heatRaf = 0
+let heatFade = 0
+let heatTarget = 0
+let heatStart = 0
+let heatLast = 0
+function heatLoop(now) {
+  const m = map.value
+  if (!m || !m.getLayer('heat-glow')) { heatRaf = 0; return }
+  const dir = heatTarget > heatFade ? 1 : -1
+  heatFade = Math.min(1, Math.max(0, heatFade + dir * ((now - (heatLast || now)) / 400)))
+  heatLast = now
+  if (heatTarget === 0 && heatFade === 0) {
+    m.setPaintProperty('heat-glow', 'heatmap-opacity', 0)
+    heatRaf = 0
+    return
+  }
+  m.setPaintProperty('heat-glow', 'heatmap-opacity', heatOpacity(easeOutCubic(heatFade), now - heatStart, reduceMotion()))
+  heatRaf = requestAnimationFrame(heatLoop)
+}
+function showHeat(on) {
+  heatTarget = on ? 1 : 0
+  heatLast = 0
+  if (!heatRaf) { heatStart = performance.now(); heatRaf = requestAnimationFrame(heatLoop) }
+}
+
+function boundsParams(pad = 0) {
   const b = map.value.getBounds()
-  return { minLat: b.getSouth(), maxLat: b.getNorth(), minLng: b.getWest(), maxLng: b.getEast() }
+  const dLat = (b.getNorth() - b.getSouth()) * pad
+  const dLng = (b.getEast() - b.getWest()) * pad
+  return { minLat: b.getSouth() - dLat, maxLat: b.getNorth() + dLat, minLng: b.getWest() - dLng, maxLng: b.getEast() + dLng }
 }
 
-// Mientras más cerca está el zoom, más fina es la cuadrícula del mapa de calor.
-function cellSizeForZoom(zoom) {
-  const size = 0.5 / Math.pow(2, zoom - 6)
-  return Math.min(0.5, Math.max(0.0005, Number(size.toFixed(4))))
-}
+// Se piden datos de un area 40 % mas grande que la pantalla. Asi, al mover el mapa un poco, la zona nueva ya esta
+// cargada y no aparece vacia (un vacio momentaneo se leeria como "no hay reportes").
+const FETCH_PAD = 0.4
+let lastHeatFetch = null
+const covers = (box, view) => box && view.minLat >= box.minLat && view.maxLat <= box.maxLat && view.minLng >= box.minLng && view.maxLng <= box.maxLng
+const loadError = ref(false)
 
 function clearMarkers() {
   markers.forEach((m) => m.remove())
@@ -60,27 +97,40 @@ function addMarker(p) {
   markers.push(marker)
 }
 
-async function load() {
+async function load(force = false) {
   if (!map.value) return
+  const view = boundsParams()
+  const cellSize = cellSizeForZoom(map.value.getZoom())
+  // Mapa de calor: si lo que se ve ya esta dentro de lo cargado (mismo zoom), no se vuelve a pedir ni parpadea.
+  if (mode.value === 'heatmap' && !force && !loadError.value && lastHeatFetch?.cellSize === cellSize && covers(lastHeatFetch.box, view)) return
   const seq = ++loadSeq
   loading.value = true
   try {
-    const area = boundsParams()
     if (mode.value === 'markers') {
-      const points = await reportsApi.map({ ...area, type: filters.type, severity: filters.severity, limit: 500 })
+      const points = await reportsApi.map({ ...view, type: filters.type, severity: filters.severity, limit: 500 })
       if (seq !== loadSeq) return
       clearMarkers()
       points.forEach(addMarker)
       count.value = points.length
       setHeat([])
+      showHeat(false)
+      lastHeatFetch = null
     } else {
-      const cells = await reportsApi.heatmap({ ...area, cellSize: cellSizeForZoom(map.value.getZoom()) })
+      const box = boundsParams(FETCH_PAD)
+      const cells = await reportsApi.heatmap({ ...box, cellSize })
       if (seq !== loadSeq) return
       clearMarkers()
       setHeat(cells)
-      count.value = cells.reduce((sum, c) => sum + c.count, 0)
+      showHeat(true)
+      lastHeatFetch = { box, cellSize }
+      count.value = totalOf(cells)
+      hotspot.value = hottestOf(cells)?.count || 0
+      countTo(count.value)
     }
+    loadError.value = false
   } catch (e) {
+    // Ante un fallo se conserva lo que ya se veia y se avisa de forma persistente: un mapa vacio por error no debe parecer "sin reportes".
+    if (seq === loadSeq) { loadError.value = true; lastHeatFetch = null }
     toast.error(messageOf(e))
   } finally {
     if (seq === loadSeq) loading.value = false
@@ -95,35 +145,43 @@ const scheduleLoad = () => {
 function setHeat(cells) {
   const src = map.value.getSource(HEAT_SOURCE)
   if (!src) return
-  src.setData({
-    type: 'FeatureCollection',
-    features: cells.map((c) => ({
-      type: 'Feature',
-      geometry: { type: 'Point', coordinates: [c.longitude, c.latitude] },
-      properties: { count: c.count, risk: c.riskLevel }
-    }))
-  })
+  src.setData(toFeatureCollection(cells))
 }
 
 function setupHeatLayers() {
-  map.value.addSource(HEAT_SOURCE, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
-  map.value.addLayer({
+  const m = map.value
+  m.addSource(HEAT_SOURCE, { type: 'geojson', data: toFeatureCollection([]) })
+  // Por debajo de las etiquetas del mapa, para que calles y nombres sigan legibles sobre el calor.
+  const firstLabel = m.getStyle().layers.find((l) => l.type === 'symbol')?.id
+  m.addLayer({
     id: 'heat-glow', type: 'heatmap', source: HEAT_SOURCE,
     paint: {
-      'heatmap-weight': ['interpolate', ['linear'], ['get', 'count'], 1, 0.3, 10, 1],
-      'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 10, 20, 16, 60],
-      'heatmap-opacity': 0.75,
-      'heatmap-color': ['interpolate', ['linear'], ['heatmap-density'],
-        0, 'rgba(46,158,107,0)', 0.25, RISK_COLORS.LOW, 0.5, RISK_COLORS.MEDIUM, 0.75, RISK_COLORS.HIGH, 1, RISK_COLORS.HIGH]
+      'heatmap-weight': heatWeightExpression(),
+      'heatmap-radius': heatRadiusExpression(),
+      'heatmap-intensity': heatIntensityExpression(),
+      'heatmap-opacity': 0,
+      'heatmap-color': heatColorExpression()
+    }
+  }, firstLabel)
+  // Con zoom cercano se ven las celdas con su cantidad, y al tocarlas el mapa se acerca.
+  m.addLayer({
+    id: 'heat-cells', type: 'circle', source: HEAT_SOURCE, minzoom: 14,
+    paint: {
+      'circle-radius': ['interpolate', ['linear'], ['get', 'count'], 1, 11, 20, 24],
+      'circle-color': ['match', ['get', 'risk'], 'LOW', RISK_COLORS.LOW, 'MEDIUM', RISK_COLORS.MEDIUM, 'HIGH', RISK_COLORS.HIGH, RISK_COLORS.HIGH],
+      'circle-opacity': 0.9, 'circle-stroke-width': 2, 'circle-stroke-color': '#fff'
     }
   })
-  map.value.addLayer({
-    id: 'heat-cells', type: 'circle', source: HEAT_SOURCE, minzoom: 13,
-    paint: {
-      'circle-radius': ['interpolate', ['linear'], ['get', 'count'], 1, 8, 20, 22],
-      'circle-color': ['match', ['get', 'risk'], 'LOW', RISK_COLORS.LOW, 'MEDIUM', RISK_COLORS.MEDIUM, 'HIGH', RISK_COLORS.HIGH, RISK_COLORS.HIGH],
-      'circle-opacity': 0.35, 'circle-stroke-width': 1, 'circle-stroke-color': '#fff'
-    }
+  m.addLayer({
+    id: 'heat-count', type: 'symbol', source: HEAT_SOURCE, minzoom: 14,
+    layout: { 'text-field': ['to-string', ['get', 'count']], 'text-font': ['DIN Pro Bold', 'Arial Unicode MS Bold'], 'text-size': 12, 'text-allow-overlap': true },
+    paint: { 'text-color': '#ffffff' }
+  })
+  m.on('mouseenter', 'heat-cells', () => { m.getCanvas().style.cursor = 'pointer' })
+  m.on('mouseleave', 'heat-cells', () => { m.getCanvas().style.cursor = '' })
+  m.on('click', 'heat-cells', (e) => {
+    const f = e.features?.[0]
+    if (f) m.flyTo({ center: f.geometry.coordinates, zoom: Math.min(m.getZoom() + 2, 18), duration: reduceMotion() ? 0 : 600, essential: true })
   })
 }
 
@@ -161,8 +219,8 @@ function reportHere() {
   router.push({ name: 'report-new', query: { lat: c.lat.toFixed(6), lng: c.lng.toFixed(6) } }).catch(() => {})
 }
 
-watch(mode, load)
-watch(filters, load)
+watch(mode, () => load(true))
+watch(filters, () => load(true))
 
 onMounted(async () => {
   mapboxgl.accessToken = env.mapboxToken
@@ -199,6 +257,8 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   clearTimeout(loadTimer)
+  cancelAnimationFrame(heatRaf)
+  countStop()
   clearMarkers()
   map.value?.remove()
 })
@@ -229,14 +289,21 @@ onBeforeUnmount(() => {
           <option v-for="s in SEVERITIES" :key="s.value" :value="s.value">{{ $t(`report.severity.${s.value}`) }}</option>
         </select>
       </div>
-      <div v-else class="legend small">
-        <span v-for="(color, risk) in RISK_COLORS" :key="risk"><i :style="{ background: color }" />{{ $t(`map.risk.${risk}`) }}</span>
+      <div v-else class="heat-legend" role="img" :aria-label="`${$t('map.risk.LOW')} - ${$t('map.risk.HIGH')}`">
+        <div class="bar" :style="{ background: HEAT_LEGEND_GRADIENT }" />
+        <div class="ends small"><span>{{ $t('map.risk.LOW') }}</span><span>{{ $t('map.risk.HIGH') }}</span></div>
       </div>
 
       <p class="muted small">
         <span v-if="loading" class="spinner" style="width: 14px; height: 14px; border-width: 2px" />
-        {{ mode === 'markers' ? $t('map.countMarkers', { n: count }) : $t('map.countHeat', { n: count }) }}
+        {{ mode === 'markers' ? $t('map.countMarkers', { n: count }) : $t('map.countHeat', { n: shownCount }) }}
       </p>
+      <p v-if="mode === 'heatmap' && hotspot && !loadError" class="hotspot small"><i class="pi pi-bolt" /> {{ $t('map.hotspot', { n: hotspot }) }}</p>
+      <div v-if="loadError" class="notice error small" role="alert">
+        <span><i class="pi pi-exclamation-triangle" /> {{ $t('map.loadError') }}</span>
+        <button type="button" class="btn btn-sm" :disabled="loading" @click="load(true)">{{ $t('map.retry') }}</button>
+      </div>
+      <p v-else-if="!loading && count === 0" class="muted small" role="status"><i class="pi pi-info-circle" /> {{ $t('map.empty') }}</p>
     </div>
 
     <div class="actions">
@@ -273,9 +340,13 @@ onBeforeUnmount(() => {
 .map { position: absolute; inset: 0; }
 .toolbar { position: absolute; top: 14px; left: 14px; width: min(360px, calc(100% - 28px)); display: flex; flex-direction: column; gap: 10px; padding: 12px; z-index: 5; }
 .toolbar .select { flex: 1; min-width: 0; }
-.legend { display: flex; gap: 12px; flex-wrap: wrap; }
-.legend span { display: inline-flex; align-items: center; gap: 5px; }
-.legend i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.heat-legend { animation: legend-in var(--dur-base, 250ms) var(--ease, ease-out) both; }
+.heat-legend .bar { height: 10px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(18, 62, 87, 0.12); }
+.heat-legend .ends { display: flex; justify-content: space-between; margin-top: 4px; color: var(--muted, #5b7283); }
+.hotspot { display: inline-flex; align-items: center; gap: 6px; color: #b42318; font-weight: 600; animation: legend-in var(--dur-base, 250ms) var(--ease, ease-out) 80ms both; }
+.notice.error { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: var(--radius-sm, 8px); background: #fef3f2; color: #b42318; border: 1px solid #fecdca; animation: legend-in var(--dur-base, 250ms) var(--ease, ease-out) both; }
+@keyframes legend-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .heat-legend, .hotspot { animation: none; } }
 .actions { position: absolute; right: 14px; top: 14px; display: flex; gap: 8px; z-index: 5; }
 .detail { position: absolute; left: 14px; bottom: 14px; width: min(360px, calc(100% - 28px)); max-height: 60%; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; z-index: 6; }
 .detail .close { position: absolute; top: 8px; right: 8px; background: rgba(255, 255, 255, 0.9); }
