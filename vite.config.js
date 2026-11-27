@@ -15,7 +15,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text-summary', 'lcov'],
-      include: ['src/api/**', 'src/stores/**', 'src/composables/**', 'src/config/**'],
+      include: ['src/api/**', 'src/stores/**', 'src/composables/**', 'src/config/**', 'src/map/**'],
       exclude: ['**/__tests__/**']
     }
   }
